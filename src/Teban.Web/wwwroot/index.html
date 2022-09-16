@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Teban</title>
+    <base href="/" />
+    <link href="_content/Teban.UI/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="_content/Teban.UI/css/app.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div id="app">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="spinner-border" role="status" style="margin-top: 50px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="_framework/blazor.webassembly.js" autostart="false"></script>
+    <script>
+        if (window.location.hostname.includes("localhost")) {
+            Blazor.start({
+                environment: "Development"
+            });
+        } else {
+            Blazor.start({
+                environment: "Production"
+            });
+        }
+    </script>
+</body>
+
+</html>

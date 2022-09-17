@@ -14,16 +14,15 @@ on:
 
 jobs:
   buildBackend:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up .NET Core
+      - name: set up dotnet
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0.*'
-          include-prerelease: false
 
       - name: build with dotnet
         run: dotnet build src/Teban.Api/Teban.Api.csproj --configuration Release
@@ -38,7 +37,7 @@ jobs:
           path: ${{env.DOTNET_ROOT}}/myapp
 
   deployApi:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: buildBackend
     environment:
       name: 'Production'

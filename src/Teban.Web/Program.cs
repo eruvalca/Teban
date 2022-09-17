@@ -18,7 +18,7 @@ if (builder.HostEnvironment.IsDevelopment())
 }
 else
 {
-    builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://timekeeprapi.azurewebsites.net/api/v1/") });
+    builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://tebanapi.azurewebsites.net/api/v1/") });
 }
 
 builder.Services.AddScoped<IdentityClientService>();

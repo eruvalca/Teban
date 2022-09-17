@@ -7,10 +7,13 @@ on:
   push:
     branches:
       - master
-  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - master
 
 jobs:
-  build:
+  buildBackend:
     runs-on: windows-latest
 
     steps:
@@ -34,11 +37,11 @@ jobs:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
 
-  deploy:
+  deployApi:
     runs-on: windows-latest
-    needs: build
+    needs: buildBackend
     environment:
-      name: 'Production'
+      name: 'Development'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
@@ -52,6 +55,23 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'tebanapi-dev'
-          slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_E7775BEF34C4452F804747206EDBED8B }}
           package: .
+  
+  build_and_deploy_web:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Build and Deploy Job
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_HAPPY_DESERT_0F320F90F }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: "upload"
+          app_location: "src/Teban.Web" # App source code path
+          output_location: "wwwroot" # Built app content directory - optional

@@ -27,7 +27,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: allowedSpecificOrigins,
         policy =>
         {
-            policy.WithOrigins("https://localhost:7189", "https://happy-sea-0d649340f.1.azurestaticapps.net", "https://www.teban.app/")
+            policy.WithOrigins("https://localhost:7189", "https://happy-sea-0d649340f.1.azurestaticapps.net", "https://www.teban.app")
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });

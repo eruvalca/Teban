@@ -24,10 +24,10 @@ namespace Teban.UI.Services
             _localStorage = localStorage;
         }
 
-        public async Task<IdentityRequestDto> Register(RegisterDto registerDto)
+        public async Task<IdentityRequestResponseDto> Register(RegisterDto registerDto)
         {
             var response = await _client.PostAsJsonAsync("identity/register", registerDto);
-            var authResult = await response.Content.ReadFromJsonAsync<IdentityRequestDto>();
+            var authResult = await response.Content.ReadFromJsonAsync<IdentityRequestResponseDto>();
 
             if (authResult is not null)
             {
@@ -44,13 +44,13 @@ namespace Teban.UI.Services
                 return authResult;
             }
 
-            return IdentityRequestDto.Failure(new string[] { "There was an error during registration." });
+            return IdentityRequestResponseDto.Failure(new string[] { "There was an error during registration." });
         }
 
-        public async Task<IdentityRequestDto> Login(LoginDto loginDto)
+        public async Task<IdentityRequestResponseDto> Login(LoginDto loginDto)
         {
             var response = await _client.PostAsJsonAsync("identity/login", loginDto);
-            var authResult = await response.Content.ReadFromJsonAsync<IdentityRequestDto>();
+            var authResult = await response.Content.ReadFromJsonAsync<IdentityRequestResponseDto>();
 
             if (authResult is not null)
             {
@@ -67,7 +67,7 @@ namespace Teban.UI.Services
                 return authResult;
             }
 
-            return IdentityRequestDto.Failure(new string[] { "There was an error during login." });
+            return IdentityRequestResponseDto.Failure(new string[] { "There was an error during login." });
         }
 
         public async Task Logout()
@@ -77,17 +77,17 @@ namespace Teban.UI.Services
             ((TokenAuthenticationStateProvider)_authStateProvider).NotifyUserLogout();
         }
 
-        public async Task<IdentityRequestDto> UpdateUser(UpdateTebanUserDto userDto)
+        public async Task<IdentityRequestResponseDto> UpdateUser(UpdateTebanUserDto userDto)
         {
             var response = await _client.PutAsJsonAsync($"identity/update/{userDto.Id}", userDto);
-            var result = await response.Content.ReadFromJsonAsync<IdentityRequestDto>();
+            var result = await response.Content.ReadFromJsonAsync<IdentityRequestResponseDto>();
 
             if (result is not null)
             {
                 return result;
             }
 
-            return IdentityRequestDto.Failure(new string[] { "There was an error updating." });
+            return IdentityRequestResponseDto.Failure(new string[] { "There was an error updating." });
         }
 
         public async Task<TebanUserDto> GetUserDetails()

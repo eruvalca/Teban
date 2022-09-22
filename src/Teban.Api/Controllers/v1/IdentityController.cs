@@ -36,19 +36,19 @@ namespace Teban.Api.Controllers.v1
                 if (loginResult.Item1)
                 {
                     //return token for login
-                    var response = IdentityRequestDto.Success(loginResult.Item2, result.Item2);
+                    var response = IdentityRequestResponseDto.Success(loginResult.Item2, result.Item2);
                     return Ok(response);
                 }
                 else
                 {
                     //if login did not work just return register result
-                    var response = IdentityRequestDto.Success(string.Empty, result.Item2);
+                    var response = IdentityRequestResponseDto.Success(string.Empty, result.Item2);
                     return Ok(response);
                 }
             }
             else
             {
-                var response = IdentityRequestDto.Failure(new string[] { result.Item2 });
+                var response = IdentityRequestResponseDto.Failure(new string[] { result.Item2 });
                 return BadRequest(response);
             }
         }
@@ -60,12 +60,12 @@ namespace Teban.Api.Controllers.v1
 
             if (result.Item1)
             {
-                var response = IdentityRequestDto.Success(result.Item2, string.Empty);
+                var response = IdentityRequestResponseDto.Success(result.Item2, string.Empty);
                 return Ok(response);
             }
             else
             {
-                var response = IdentityRequestDto.Failure(new string[] { result.Item2 });
+                var response = IdentityRequestResponseDto.Failure(new string[] { result.Item2 });
                 return BadRequest(response);
             }
         }
@@ -76,7 +76,7 @@ namespace Teban.Api.Controllers.v1
         {
             if (id != updateDto.Id)
             {
-                var response = IdentityRequestDto.Failure(new string[] { "The given user id does not match the updated user id." });
+                var response = IdentityRequestResponseDto.Failure(new string[] { "The given user id does not match the updated user id." });
                 return BadRequest(response);
             }
 
@@ -84,12 +84,12 @@ namespace Teban.Api.Controllers.v1
 
             if (result.Item1)
             {
-                var response = IdentityRequestDto.Success(string.Empty, result.Item2);
+                var response = IdentityRequestResponseDto.Success(string.Empty, result.Item2);
                 return Ok(response);
             }
             else
             {
-                var response = IdentityRequestDto.Failure(new string[] { result.Item2 });
+                var response = IdentityRequestResponseDto.Failure(new string[] { result.Item2 });
                 return BadRequest(response);
             }
         }

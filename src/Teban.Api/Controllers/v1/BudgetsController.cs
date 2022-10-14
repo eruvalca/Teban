@@ -26,11 +26,6 @@ namespace Teban.Api.Controllers.v1
         {
             var budgets = await _context.Budgets
                 .Where(b => b.UserId == HttpContext.GetUserId())
-                .Select(b => new BudgetDto
-                {
-                    BudgetId = b.BudgetId,
-                    Name = b.Name
-                })
                 .ToListAsync();
 
             if (budgets is null)
@@ -38,7 +33,7 @@ namespace Teban.Api.Controllers.v1
                 return NotFound();
             }
 
-            var successResponse = RequestResponseDto<IEnumerable<BudgetDto>>.Success(budgets);
+            var successResponse = RequestResponseDto<IEnumerable<Budget>>.Success(budgets);
             return Ok(successResponse);
         }
 
@@ -49,13 +44,13 @@ namespace Teban.Api.Controllers.v1
 
             if (budget is null)
             {
-                var errorResponse = RequestResponseDto<IEnumerable<BudgetDto>>.Failure(new string[] { "The requested budget does not exist." });
+                var errorResponse = RequestResponseDto<IEnumerable<Budget>>.Failure(new string[] { "The requested budget does not exist." });
                 return NotFound(errorResponse);
             }
 
             if (budget.UserId != HttpContext.GetUserId())
             {
-                var errorResponse = RequestResponseDto<IEnumerable<BudgetDto>>.Failure(new string[] { "The budget does not belong to the logged in user." });
+                var errorResponse = RequestResponseDto<IEnumerable<Budget>>.Failure(new string[] { "The budget does not belong to the logged in user." });
                 return BadRequest(errorResponse);
             }
 
@@ -67,25 +62,18 @@ namespace Teban.Api.Controllers.v1
                         .ThenInclude(at => at.TransactionEntries)
                 .Include(b => b.CategoryGroups)
                     .ThenInclude(c => c.Categories)
-                .Select(b => new BudgetDto
-                {
-                    BudgetId = b.BudgetId,
-                    Name = b.Name,
-                    Accounts = b.Accounts,
-                    CategoryGroups = b.CategoryGroups
-                })
                 .ToListAsync();
 
-            var successResponse = RequestResponseDto<IEnumerable<BudgetDto>>.Success(resultSet);
+            var successResponse = RequestResponseDto<IEnumerable<Budget>>.Success(resultSet);
             return Ok(successResponse);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostBudget([FromBody] CreateBudgetDto createBudgetDto)
+        public async Task<IActionResult> PostBudget([FromBody] Budget budget)
         {
             var newBudget = new Budget
             {
-                Name = createBudgetDto.Name,
+                Name = budget.Name,
                 UserId = HttpContext.GetUserId(),
                 CreatedBy = HttpContext.GetUserId()
             };
@@ -95,39 +83,38 @@ namespace Teban.Api.Controllers.v1
 
             if (createResult < 1)
             {
-                var errorResponse = RequestResponseDto<BudgetDto>.Failure(new string[] { "There was a problem creating the budget." });
+                var errorResponse = RequestResponseDto<Budget>.Failure(new string[] { "There was a problem creating the budget." });
                 return BadRequest(errorResponse);
             }
 
-            var newBudgetDto = new BudgetDto { BudgetId = newBudget.BudgetId, Name = newBudget.Name };
-            var successResponse = RequestResponseDto<BudgetDto>.Success(newBudgetDto);
+            var successResponse = RequestResponseDto<Budget>.Success(newBudget);
             return CreatedAtAction("GetBudget", new { id = newBudget.BudgetId }, successResponse);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBudget(int id, [FromBody] UpdateBudgetDto updateBudgetDto)
+        public async Task<IActionResult> PutBudget(int id, [FromBody] Budget budget)
         {
-            if (id != updateBudgetDto.BudgetId)
+            if (id != budget.BudgetId)
             {
                 return BadRequest("The provided id does not matcht the id of the budget.");
             }
 
-            var budget = await _context.Budgets.FindAsync(id);
+            var existingBudget = await _context.Budgets.FindAsync(id);
 
-            if (budget is null)
+            if (existingBudget is null)
             {
                 var errorResponse = RequestResponseDto<int>.Failure(new string[] { "The requested budget does not exist." });
                 return NotFound(errorResponse);
             }
 
-            if (budget.UserId != HttpContext.GetUserId())
+            if (existingBudget.UserId != HttpContext.GetUserId())
             {
                 var errorResponse = RequestResponseDto<int>.Failure(new string[] { "The budget does not belong to the logged in user." });
                 return BadRequest(errorResponse);
             }
 
-            budget.Name = updateBudgetDto.Name;
-            _context.Entry(budget).State = EntityState.Modified;
+            existingBudget.Name = budget.Name;
+            _context.Entry(existingBudget).State = EntityState.Modified;
 
             var updateResult = await _context.SaveChangesAsync();
 

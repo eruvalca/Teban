@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Teban.Api.Extensions;
@@ -8,7 +9,8 @@ using Teban.Infrastructure.Persistence;
 
 namespace Teban.Api.Controllers.v1
 {
-    [Route("api/[controller]")]
+    [Authorize]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class CategoryGroupsController : ControllerBase
     {
@@ -93,7 +95,7 @@ namespace Teban.Api.Controllers.v1
 
             if (categoryGroup is null)
             {
-                var errorResponse = RequestResponseDto<int>.Failure(new string[] { "The requested categoryGroup does not exist." });
+                var errorResponse = RequestResponseDto<int>.Failure(new string[] { "The requested category group does not exist." });
                 return NotFound(errorResponse);
             }
 

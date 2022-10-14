@@ -12,11 +12,11 @@ namespace Teban.Api.Controllers.v1
     [Authorize]
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public AccountController(ApplicationDbContext context)
+        public AccountsController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -44,13 +44,13 @@ namespace Teban.Api.Controllers.v1
 
             if (account is null)
             {
-                var errorResponse = RequestResponseDto<IEnumerable<Account>>.Failure(new string[] { "The requested account does not exist." });
+                var errorResponse = RequestResponseDto<Account>.Failure(new string[] { "The requested account does not exist." });
                 return NotFound(errorResponse);
             }
 
             if (account.UserId != HttpContext.GetUserId())
             {
-                var errorResponse = RequestResponseDto<IEnumerable<Account>>.Failure(new string[] { "The account does not belong to the logged in user." });
+                var errorResponse = RequestResponseDto<Account>.Failure(new string[] { "The account does not belong to the logged in user." });
                 return BadRequest(errorResponse);
             }
 
@@ -61,7 +61,7 @@ namespace Teban.Api.Controllers.v1
                     .ThenInclude(at => at.TransactionEntries)
                 .ToListAsync();
 
-            var successResponse = RequestResponseDto<IEnumerable<Account>>.Success(resultSet);
+            var successResponse = RequestResponseDto<Account>.Success(resultSet.First());
             return Ok(successResponse);
         }
 
@@ -78,7 +78,7 @@ namespace Teban.Api.Controllers.v1
             }
 
             var successResponse = RequestResponseDto<Account>.Success(account);
-            return CreatedAtAction("GetBudget", new { id = account.AccountId }, successResponse);
+            return CreatedAtAction("GetAccount", new { id = account.AccountId }, successResponse);
         }
 
         [HttpPut("{id}")]

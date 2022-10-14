@@ -45,13 +45,13 @@ namespace Teban.Api.Controllers.v1
 
             if (budget is null)
             {
-                var errorResponse = RequestResponseDto<IEnumerable<Budget>>.Failure(new string[] { "The requested budget does not exist." });
+                var errorResponse = RequestResponseDto<Budget>.Failure(new string[] { "The requested budget does not exist." });
                 return NotFound(errorResponse);
             }
 
             if (budget.UserId != HttpContext.GetUserId())
             {
-                var errorResponse = RequestResponseDto<IEnumerable<Budget>>.Failure(new string[] { "The budget does not belong to the logged in user." });
+                var errorResponse = RequestResponseDto<Budget>.Failure(new string[] { "The budget does not belong to the logged in user." });
                 return BadRequest(errorResponse);
             }
 
@@ -65,7 +65,7 @@ namespace Teban.Api.Controllers.v1
                     .ThenInclude(c => c.Categories)
                 .ToListAsync();
 
-            var successResponse = RequestResponseDto<IEnumerable<Budget>>.Success(resultSet);
+            var successResponse = RequestResponseDto<Budget>.Success(resultSet.First());
             return Ok(successResponse);
         }
 

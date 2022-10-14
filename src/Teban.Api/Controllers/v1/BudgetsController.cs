@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Teban.Api.Extensions;
-using Teban.Application.Dtos.Budget;
 using Teban.Application.Dtos.Request;
 using Teban.Domain.Entities;
 using Teban.Infrastructure.Persistence;
@@ -10,6 +10,7 @@ using Teban.Infrastructure.Persistence;
 
 namespace Teban.Api.Controllers.v1
 {
+    [Authorize]
     [Route("api/v1/[controller]")]
     [ApiController]
     public class BudgetsController : ControllerBase
@@ -71,14 +72,7 @@ namespace Teban.Api.Controllers.v1
         [HttpPost]
         public async Task<IActionResult> PostBudget([FromBody] Budget budget)
         {
-            var newBudget = new Budget
-            {
-                Name = budget.Name,
-                UserId = HttpContext.GetUserId(),
-                CreatedBy = HttpContext.GetUserId()
-            };
-
-            _context.Budgets.Add(newBudget);
+            _context.Budgets.Add(budget);
             var createResult = await _context.SaveChangesAsync();
 
             if (createResult < 1)
@@ -87,8 +81,8 @@ namespace Teban.Api.Controllers.v1
                 return BadRequest(errorResponse);
             }
 
-            var successResponse = RequestResponseDto<Budget>.Success(newBudget);
-            return CreatedAtAction("GetBudget", new { id = newBudget.BudgetId }, successResponse);
+            var successResponse = RequestResponseDto<Budget>.Success(budget);
+            return CreatedAtAction("GetBudget", new { id = budget.BudgetId }, successResponse);
         }
 
         [HttpPut("{id}")]
@@ -96,7 +90,7 @@ namespace Teban.Api.Controllers.v1
         {
             if (id != budget.BudgetId)
             {
-                return BadRequest("The provided id does not matcht the id of the budget.");
+                return BadRequest("The provided id does not match the id of the budget.");
             }
 
             var existingBudget = await _context.Budgets.FindAsync(id);

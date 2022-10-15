@@ -25,6 +25,12 @@ builder.Services.AddScoped<IdentityClientService>();
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<ILocalSecureStorage, BrowserLocalSecureStorage>();
+builder.Services.AddScoped<BudgetsService>();
+builder.Services.AddScoped<AccountsService>();
+builder.Services.AddScoped<CategoryGroupsService>();
+builder.Services.AddScoped<CategoriesService>();
+builder.Services.AddScoped<AccountTransactionsService>();
+builder.Services.AddScoped<TransactionEntriesService>();
 
 builder.Services.AddAuthorizationCore();
 

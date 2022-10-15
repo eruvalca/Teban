@@ -21,22 +21,6 @@ namespace Teban.Api.Controllers.v1
             _context = context;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAccounts()
-        {
-            var accounts = await _context.Accounts
-                .Where(a => a.UserId == HttpContext.GetUserId())
-                .ToListAsync();
-
-            if (accounts is null)
-            {
-                return NotFound();
-            }
-
-            var successResponse = RequestResponseDto<IEnumerable<Account>>.Success(accounts);
-            return Ok(successResponse);
-        }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAccount(int id)
         {

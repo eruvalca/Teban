@@ -19,6 +19,7 @@ namespace Teban.UI.Services
         {
             _httpClient = httpClient;
         }
+
         public async Task<RequestResponseDto<IEnumerable<Budget>>> GetBudgets()
         {
             RequestResponseDto<IEnumerable<Budget>>? response;

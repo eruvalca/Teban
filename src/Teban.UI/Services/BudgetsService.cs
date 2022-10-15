@@ -26,7 +26,7 @@ namespace Teban.UI.Services
 
             try
             {
-                response = await _httpClient.GetFromJsonAsync<RequestResponseDto<IEnumerable<Budget>>>("api/v1/budgets");
+                response = await _httpClient.GetFromJsonAsync<RequestResponseDto<IEnumerable<Budget>>>("budgets");
             }
             catch (Exception ex)
             {
@@ -47,7 +47,7 @@ namespace Teban.UI.Services
 
             try
             {
-                response = await _httpClient.GetFromJsonAsync<RequestResponseDto<Budget>>($"api/v1/budgets/{id}");
+                response = await _httpClient.GetFromJsonAsync<RequestResponseDto<Budget>>($"budgets/{id}");
             }
             catch (Exception ex)
             {
@@ -68,7 +68,7 @@ namespace Teban.UI.Services
 
             try
             {
-                response = await _httpClient.PostAsJsonAsync("api/v1/budgets", budget);
+                response = await _httpClient.PostAsJsonAsync("budgets", budget);
             }
             catch (Exception ex)
             {
@@ -91,7 +91,7 @@ namespace Teban.UI.Services
 
             try
             {
-                response = await _httpClient.PutAsJsonAsync($"api/v1/budgets/{id}", budget);
+                response = await _httpClient.PutAsJsonAsync($"budgets/{id}", budget);
             }
             catch (Exception ex)
             {
@@ -112,7 +112,7 @@ namespace Teban.UI.Services
 
             try
             {
-                response = await _httpClient.DeleteAsync($"api/v1/budgets/{id}");
+                response = await _httpClient.DeleteAsync($"budgets/{id}");
             }
             catch (Exception ex)
             {

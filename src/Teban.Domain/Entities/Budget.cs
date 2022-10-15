@@ -7,7 +7,7 @@ namespace Teban.Domain.Entities
         public int BudgetId { get; set; }
         public string Name { get; set; } = string.Empty;
 
-        public string UserId { get; set; } = string.Empty;
+        public string TebanUserId { get; set; }
         public ICollection<Account>? Accounts { get; set; }
         public ICollection<CategoryGroup>? CategoryGroups { get; set; }
     }

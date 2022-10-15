@@ -32,15 +32,8 @@ namespace Teban.Api.Controllers.v1
                 return NotFound(errorResponse);
             }
 
-            if (account.UserId != HttpContext.GetUserId())
-            {
-                var errorResponse = RequestResponseDto<Account>.Failure(new string[] { "The account does not belong to the logged in user." });
-                return BadRequest(errorResponse);
-            }
-
             var resultSet = await _context.Accounts
-                .Where(a => a.UserId == HttpContext.GetUserId()
-                    && a.AccountId == id)
+                .Where(a => a.AccountId == id)
                 .Include(a => a.AccountTransactions)
                     .ThenInclude(at => at.TransactionEntries)
                 .ToListAsync();
@@ -81,12 +74,6 @@ namespace Teban.Api.Controllers.v1
                 return NotFound(errorResponse);
             }
 
-            if (existingAccount.UserId != HttpContext.GetUserId())
-            {
-                var errorResponse = RequestResponseDto<int>.Failure(new string[] { "The account does not belong to the logged in user." });
-                return BadRequest(errorResponse);
-            }
-
             existingAccount.Name = account.Name;
             existingAccount.StartingBalance = account.StartingBalance;
             existingAccount.AccountType = account.AccountType;
@@ -113,12 +100,6 @@ namespace Teban.Api.Controllers.v1
             {
                 var errorResponse = RequestResponseDto<int>.Failure(new string[] { "The requested account does not exist." });
                 return NotFound(errorResponse);
-            }
-
-            if (account.UserId != HttpContext.GetUserId())
-            {
-                var errorResponse = RequestResponseDto<int>.Failure(new string[] { "The account does not belong to the logged in user." });
-                return BadRequest(errorResponse);
             }
 
             _context.Accounts.Remove(account);

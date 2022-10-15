@@ -26,7 +26,7 @@ namespace Teban.Api.Controllers.v1
         public async Task<IActionResult> GetBudgets()
         {
             var budgets = await _context.Budgets
-                .Where(b => b.UserId == HttpContext.GetUserId())
+                .Where(b => b.TebanUserId == HttpContext.GetUserId())
                 .ToListAsync();
 
             if (budgets is null)
@@ -49,14 +49,14 @@ namespace Teban.Api.Controllers.v1
                 return NotFound(errorResponse);
             }
 
-            if (budget.UserId != HttpContext.GetUserId())
+            if (budget.TebanUserId != HttpContext.GetUserId())
             {
                 var errorResponse = RequestResponseDto<Budget>.Failure(new string[] { "The budget does not belong to the logged in user." });
                 return BadRequest(errorResponse);
             }
 
             var resultSet = await _context.Budgets
-                .Where(b => b.UserId == HttpContext.GetUserId()
+                .Where(b => b.TebanUserId == HttpContext.GetUserId()
                     && b.BudgetId == id)
                 .Include(b => b.Accounts)
                     .ThenInclude(a => a.AccountTransactions)
@@ -101,7 +101,7 @@ namespace Teban.Api.Controllers.v1
                 return NotFound(errorResponse);
             }
 
-            if (existingBudget.UserId != HttpContext.GetUserId())
+            if (existingBudget.TebanUserId != HttpContext.GetUserId())
             {
                 var errorResponse = RequestResponseDto<int>.Failure(new string[] { "The budget does not belong to the logged in user." });
                 return BadRequest(errorResponse);
@@ -132,7 +132,7 @@ namespace Teban.Api.Controllers.v1
                 return NotFound(errorResponse);
             }
 
-            if (budget.UserId != HttpContext.GetUserId())
+            if (budget.TebanUserId != HttpContext.GetUserId())
             {
                 var errorResponse = RequestResponseDto<int>.Failure(new string[] { "The budget does not belong to the logged in user." });
                 return BadRequest(errorResponse);

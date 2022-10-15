@@ -24,7 +24,7 @@ namespace Teban.UI.Services
 
             try
             {
-                response = await _httpClient.GetFromJsonAsync<RequestResponseDto<CategoryGroup>>($"api/v1/categoryGroups/{id}");
+                response = await _httpClient.GetFromJsonAsync<RequestResponseDto<CategoryGroup>>($"categoryGroups/{id}");
             }
             catch (Exception ex)
             {
@@ -45,7 +45,7 @@ namespace Teban.UI.Services
 
             try
             {
-                response = await _httpClient.PostAsJsonAsync("api/v1/categoryGroups", categoryGroup);
+                response = await _httpClient.PostAsJsonAsync("categoryGroups", categoryGroup);
             }
             catch (Exception ex)
             {
@@ -68,7 +68,7 @@ namespace Teban.UI.Services
 
             try
             {
-                response = await _httpClient.PutAsJsonAsync($"api/v1/categoryGroups/{id}", categoryGroup);
+                response = await _httpClient.PutAsJsonAsync($"categoryGroups/{id}", categoryGroup);
             }
             catch (Exception ex)
             {
@@ -89,7 +89,7 @@ namespace Teban.UI.Services
 
             try
             {
-                response = await _httpClient.DeleteAsync($"api/v1/categoryGroups/{id}");
+                response = await _httpClient.DeleteAsync($"categoryGroups/{id}");
             }
             catch (Exception ex)
             {

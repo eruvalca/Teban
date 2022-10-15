@@ -11,7 +11,6 @@ namespace Teban.Domain.Entities
         public AccountType AccountType { get; set; }
 
         public int BudgetId { get; set; }
-        public string UserId { get; set; } = string.Empty;
         public ICollection<AccountTransaction>? AccountTransactions { get; set; }
     }
 }

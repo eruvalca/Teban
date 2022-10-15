@@ -24,7 +24,7 @@ namespace Teban.UI.Services
 
             try
             {
-                response = await _httpClient.GetFromJsonAsync<RequestResponseDto<AccountTransaction>>($"api/v1/accountTransactions/{id}");
+                response = await _httpClient.GetFromJsonAsync<RequestResponseDto<AccountTransaction>>($"accountTransactions/{id}");
             }
             catch (Exception ex)
             {
@@ -45,7 +45,7 @@ namespace Teban.UI.Services
 
             try
             {
-                response = await _httpClient.PostAsJsonAsync("api/v1/accountTransactions", accountTransaction);
+                response = await _httpClient.PostAsJsonAsync("accountTransactions", accountTransaction);
             }
             catch (Exception ex)
             {
@@ -68,7 +68,7 @@ namespace Teban.UI.Services
 
             try
             {
-                response = await _httpClient.PutAsJsonAsync($"api/v1/accountTransactions/{id}", accountTransaction);
+                response = await _httpClient.PutAsJsonAsync($"accountTransactions/{id}", accountTransaction);
             }
             catch (Exception ex)
             {
@@ -89,7 +89,7 @@ namespace Teban.UI.Services
 
             try
             {
-                response = await _httpClient.DeleteAsync($"api/v1/accountTransactions/{id}");
+                response = await _httpClient.DeleteAsync($"accountTransactions/{id}");
             }
             catch (Exception ex)
             {

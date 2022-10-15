@@ -13,11 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teban.Infrastructure", "src
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teban.Application", "src\Teban.Application\Teban.Application.csproj", "{7F593D2E-74B3-4CAC-AE96-7A7C08BE1B3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teban.Api", "src\Teban.Api\Teban.Api.csproj", "{C521C467-ACF4-4DDF-839C-E2D2C03C320A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teban.Api", "src\Teban.Api\Teban.Api.csproj", "{C521C467-ACF4-4DDF-839C-E2D2C03C320A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teban.UI", "src\Teban.UI\Teban.UI.csproj", "{2278D454-6742-4BF0-B607-08F5515F79A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teban.UI", "src\Teban.UI\Teban.UI.csproj", "{2278D454-6742-4BF0-B607-08F5515F79A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teban.Web", "src\Teban.Web\Teban.Web.csproj", "{2E13E8A9-80AE-41A0-B654-E1C0072E756E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teban.Web", "src\Teban.Web\Teban.Web.csproj", "{2E13E8A9-80AE-41A0-B654-E1C0072E756E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

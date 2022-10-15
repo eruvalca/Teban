@@ -4,23 +4,43 @@
     </div>
 </div>
 
-<Condition Evaluation="Budgets is not null && Budgets.Count > 0">
+<Condition Evaluation="Budgets is not null">
     <Match>
-        <div class="row">
-            <div class="col-12">
-                <h5>You have budgets.</h5>
-            </div>
-        </div>
-    </Match>
+        <Condition Evaluation="Budgets.Count > 0">
+            <Match>
+                <div class="row">
+                    <div class="col-12">
+                        <h5>Select a budget:</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <Iterations Items="Budgets">
+                        <div class="col-6 col-md-3 col-lg-4">
+                            <div class="card shadow" @onclick='() => Navigation.NavigateTo($"/budget/{context.BudgetId}")'>
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        @context.Name
+                                    </h5>
+                                    <h6 class="card-subtitle text-muted">
+                                        @context.Created.ToLocalTime().ToShortDateString()
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                    </Iterations>
+                </div>
+            </Match>
 
-    <NotMatch>
-        <div class="row">
-            <div class="col-12">
-                <h5>You have not created a budget yet. Get started now.</h5>
-            </div>
-            <div class="col-12">
-                <a href="/budget/new">Create new budget</a>
-            </div>
-        </div>
-    </NotMatch>
+            <NotMatch>
+                <div class="row">
+                    <div class="col-12">
+                        <h5>You have not created a budget yet. Get started now.</h5>
+                    </div>
+                    <div class="col-12">
+                        <a href="/budget/new">Create new budget</a>
+                    </div>
+                </div>
+            </NotMatch>
+        </Condition>
+    </Match>
 </Condition>

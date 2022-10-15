@@ -14,6 +14,8 @@ namespace Teban.UI.Shared
     public partial class Dashboard
     {
         [Inject]
+        private NavigationManager Navigation { get; set; }
+        [Inject]
         private BudgetsService BudgetsService { get; set; }
 
         private List<Budget>? Budgets { get; set; }

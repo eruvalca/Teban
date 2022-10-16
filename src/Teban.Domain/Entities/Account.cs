@@ -12,5 +12,29 @@ namespace Teban.Domain.Entities
 
         public int BudgetId { get; set; }
         public ICollection<AccountTransaction>? AccountTransactions { get; set; }
+
+        public decimal GetAccountBalance()
+        {
+            var balance = StartingBalance;
+
+            if (AccountTransactions is not null)
+            {
+                if (AccountTransactions.Any())
+                {
+                    foreach (var accountTransaction in AccountTransactions)
+                    {
+                        if (accountTransaction.TransactionEntries is not null)
+                        {
+                            if (accountTransaction.TransactionEntries.Any())
+                            {
+                                balance += accountTransaction.TransactionEntries.Sum(a => a.CreditAmount + a.DebitAmount);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return balance;
+        }
     }
 }

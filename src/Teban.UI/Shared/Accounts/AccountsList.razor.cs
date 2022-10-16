@@ -10,9 +10,9 @@ using Teban.Domain.Entities;
 namespace Teban.UI.Shared.Accounts
 {
     [Authorize]
-    public partial class AccountCard
+    public partial class AccountsList
     {
         [Parameter]
-        public Account Account { get; set; }
+        public IEnumerable<Account> Accounts { get; set; }
     }
 }

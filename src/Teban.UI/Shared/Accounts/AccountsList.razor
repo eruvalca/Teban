@@ -1,0 +1,12 @@
+﻿<table class="table">
+    <tbody>
+        <Iterations Items="Accounts">
+            <tr>
+                <td>@context.Name</td>
+                <td class='text-end @(context.AccountType == AccountType.Debit ? "text-success" : "text-danger")'>
+                    @context.GetAccountBalance().ToString("C")
+                </td>
+            </tr>
+        </Iterations>
+    </tbody>
+</table>

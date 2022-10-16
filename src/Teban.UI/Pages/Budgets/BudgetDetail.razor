@@ -12,22 +12,19 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <h5>Accounts</h5>
+                        <h5>Accounts <small><a href="/account/new/@BudgetId">Add account</a></small></h5>
                     </div>
 
                     <Condition Evaluation="Budget.Accounts is not null && Budget.Accounts.Any()">
                         <Match>
-                            <Iterations Items="Budget.Accounts" Context="account">
-                                <AccountCard Account="account" />
-                            </Iterations>
+                            <div class="col-12">
+                                <AccountsList Accounts="Budget.Accounts" />
+                            </div>
                         </Match>
 
                         <NotMatch>
                             <div class="col-12">
-                                <p>You haven't added any accounts. Add one now.</p>
-                            </div>
-                            <div class="col-12">
-                                <a href="/account/new">Add account</a>
+                                <p>You haven't added any accounts.</p>
                             </div>
                         </NotMatch>
                     </Condition>

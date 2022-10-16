@@ -1,0 +1,68 @@
+﻿@page "/account/new/{BudgetId:int}"
+
+<div class="row">
+    <div class="col-12">
+        <h3>New Account</h3>
+    </div>
+</div>
+
+<Condition Evaluation="ShowErrors">
+    <Match>
+        <div class="row">
+            <div class="col-12">
+                <ul class="error-list">
+                    <Iterations Items="ErrorMessages">
+                        <li class=validation-message>@context</li>
+                    </Iterations>
+                </ul>
+            </div>
+        </div>
+    </Match>
+</Condition>
+
+<Condition Evaluation="User is not null">
+    <Match>
+        <EditForm Model="Account" OnValidSubmit="HandleSubmit">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label class="form-label">Give your account a name</label>
+                        <InputText class="form-control" @bind-Value="Account.Name" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">What kind of account is this?</label>
+                        <InputSelect class="form-control" @bind-Value="Account.AccountType">
+                            <option value="@AccountType.Debit">Checking</option>
+                            <option value="@AccountType.Debit">Savings</option>
+                            <option value="@AccountType.Credit">Credit Card</option>
+                            <option value="@AccountType.Credit">Loan</option>
+                        </InputSelect>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">What is the current balance?</label>
+                        <InputNumber class="form-control" step="0.01" min="0" @bind-Value="Account.StartingBalance" />
+                    </div>
+
+                    <div class="form-group text-end">
+                        <button type="reset" class="btn btn-secondary" @onclick='() => Navigation.NavigateTo($"/budget/{BudgetId}")'>Cancel</button>
+
+                        <Condition Evaluation="DisableSubmit">
+                            <Match>
+                                <button type="button" class="btn btn-success" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Submitting...
+                                </button>
+                            </Match>
+
+                            <NotMatch>
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </NotMatch>
+                        </Condition>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+    </Match>
+</Condition>

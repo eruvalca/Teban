@@ -7,22 +7,26 @@ using System.Text;
 using System.Threading.Tasks;
 using Teban.Application.Dtos.Identity;
 using Teban.Domain.Entities;
+using Teban.Domain.Enums;
 using Teban.UI.Services;
 
-namespace Teban.UI.Pages.Budgets
+namespace Teban.UI.Pages.Accounts
 {
     [Authorize]
-    public partial class CreateBudget
+    public partial class CreateAccount
     {
         [Inject]
         private NavigationManager Navigation { get; set; }
         [Inject]
         private IdentityClientService IdentityService { get; set; }
         [Inject]
-        private BudgetsService BudgetsService { get; set; }
+        private AccountsService AccountsService { get; set; }
+
+        [Parameter]
+        public int BudgetId { get; set; }
 
         private TebanUserDto? User { get; set; }
-        private Budget Budget { get; set; } = new Budget();
+        private Account Account { get; set; } = new Account();
         private List<string> ErrorMessages { get; set; } = new List<string>();
         private bool ShowErrors { get; set; } = false;
         private bool DisableSubmit { get; set; } = false;
@@ -36,10 +40,15 @@ namespace Teban.UI.Pages.Budgets
         {
             DisableSubmit = true;
 
-            Budget.TebanUserId = User.UserId;
-            Budget.CreatedBy = User.UserId;
+            Account.BudgetId = BudgetId;
+            Account.CreatedBy = User.UserId;
 
-            var result = await BudgetsService.PostBudget(Budget);
+            if (Account.AccountType == AccountType.Credit)
+            {
+                Account.StartingBalance *= -1;
+            }
+
+            var result = await AccountsService.PostAccount(Account);
 
             if (result.Succeeded)
             {
@@ -53,7 +62,7 @@ namespace Teban.UI.Pages.Budgets
                 }
                 else
                 {
-                    ErrorMessages = new List<string> { "There was an error creating the budget." };
+                    ErrorMessages = new List<string> { "There was an error creating the account." };
                 }
 
                 ShowErrors = true;

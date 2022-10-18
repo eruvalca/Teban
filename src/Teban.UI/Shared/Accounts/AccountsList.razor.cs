@@ -14,5 +14,7 @@ namespace Teban.UI.Shared.Accounts
     {
         [Parameter]
         public IEnumerable<Account> Accounts { get; set; }
+        [Parameter]
+        public IEnumerable<TransactionEntry> TransactionEntries { get; set; }
     }
 }

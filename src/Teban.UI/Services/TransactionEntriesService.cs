@@ -62,6 +62,27 @@ namespace Teban.UI.Services
             return result;
         }
 
+        public async Task<RequestResponseDto<int>> PostTransactionEntryBatch(IEnumerable<TransactionEntry> transactionEntries)
+        {
+            HttpResponseMessage response;
+
+            try
+            {
+                response = await _httpClient.PostAsJsonAsync("transactionEntries/batch", transactionEntries);
+            }
+            catch (Exception ex)
+            {
+                return RequestResponseDto<int>.Failure(new string[] { ex.Message });
+            }
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return RequestResponseDto<int>.Failure(new string[] { "There was an error creating the entries." });
+            }
+
+            return RequestResponseDto<int>.Success(transactionEntries.Count());
+        }
+
         public async Task<RequestResponseDto<int>> PutTransactionEntry(int id, TransactionEntry transactionEntry)
         {
             HttpResponseMessage response;

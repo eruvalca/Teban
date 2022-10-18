@@ -10,7 +10,7 @@ using Teban.Infrastructure.Persistence;
 namespace Teban.Api.Controllers.v1
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class TransactionEntriesController : ControllerBase
     {
@@ -56,6 +56,21 @@ namespace Teban.Api.Controllers.v1
             return CreatedAtAction("GetTransactionEntry", new { id = transactionEntry.TransactionEntryId }, successResponse);
         }
 
+        [HttpPost("batch")]
+        public async Task<IActionResult> PostTransactionEntryBatch([FromBody] IEnumerable<TransactionEntry> transactionEntries)
+        {
+            _context.TransactionEntries.AddRange(transactionEntries);
+            var createResult = await _context.SaveChangesAsync();
+
+            if (createResult < 1)
+            {
+                var errorResponse = RequestResponseDto<int>.Failure(new string[] { "There was a problem creating the entries." });
+                return BadRequest(errorResponse);
+            }
+
+            return NoContent();
+        }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTransactionEntry(int id, [FromBody] TransactionEntry transactionEntry)
         {
@@ -72,8 +87,7 @@ namespace Teban.Api.Controllers.v1
                 return NotFound(errorResponse);
             }
 
-            existingTransactionEntry.DebitAmount = transactionEntry.DebitAmount;
-            existingTransactionEntry.CreditAmount = transactionEntry.CreditAmount;
+            existingTransactionEntry.Amount = transactionEntry.Amount;
 
             _context.Entry(existingTransactionEntry).State = EntityState.Modified;
 

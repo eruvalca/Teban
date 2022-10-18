@@ -18,6 +18,27 @@ namespace Teban.UI.Services
             _httpClient = httpClient;
         }
 
+        public async Task<RequestResponseDto<IEnumerable<Account>>> GetAccountsByBudget(int id)
+        {
+            RequestResponseDto<IEnumerable<Account>>? response;
+
+            try
+            {
+                response = await _httpClient.GetFromJsonAsync<RequestResponseDto<IEnumerable<Account>>>($"accounts/budget/{id}");
+            }
+            catch (Exception ex)
+            {
+                return RequestResponseDto<IEnumerable<Account>>.Failure(new string[] { ex.Message });
+            }
+
+            if (response is null)
+            {
+                return RequestResponseDto<IEnumerable<Account>>.Failure(new string[] { "There was an error retrieving the accounts." });
+            }
+
+            return response;
+        }
+
         public async Task<RequestResponseDto<Account>> GetAccount(int id)
         {
             RequestResponseDto<Account>? response;

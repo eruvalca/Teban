@@ -20,6 +20,22 @@ namespace Teban.Api.Controllers.v1
             _context = context;
         }
 
+        [HttpGet("budget/{id}")]
+        public async Task<IActionResult> GetCategoriesByBudget(int id)
+        {
+            var categories = await _context.Categories
+                .Where(c => c.BudgetId == id)
+                .ToListAsync();
+
+            if (categories is null)
+            {
+                return NotFound();
+            }
+
+            var successResponse = RequestResponseDto<IEnumerable<Category>>.Success(categories);
+            return Ok(successResponse);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCategory(int id)
         {

@@ -5,6 +5,6 @@
         public int CategoryId { get; set; }
         public string Name { get; set; } = string.Empty;
 
-        public int CategoryGroupId { get; set; }
+        public int BudgetId { get; set; }
     }
 }

@@ -9,6 +9,7 @@ namespace Teban.Domain.Entities
 
         public string TebanUserId { get; set; }
         public ICollection<Account>? Accounts { get; set; }
-        public ICollection<CategoryGroup>? CategoryGroups { get; set; }
+        public ICollection<Category> Categories { get; set; }
+        public ICollection<AccountTransaction>? AccountTransactions { get; set; }
     }
 }

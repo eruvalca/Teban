@@ -1,1 +1,214 @@
 ﻿@page "/transaction/new/{BudgetId:int}"
+
+<div class="row">
+    <div class="col-12">
+        <h3>New Transaction</h3>
+    </div>
+</div>
+
+<Condition Evaluation="ShowErrors">
+    <Match>
+        <div class="row">
+            <div class="col-12">
+                <ul class="error-list">
+                    <Iterations Items="ErrorMessages">
+                        <li class=validation-message>@context</li>
+                    </Iterations>
+                </ul>
+            </div>
+        </div>
+    </Match>
+</Condition>
+
+<Condition Evaluation="User is not null && Accounts is not null && Categories is not null">
+    <Match>
+        <EditForm Model="AccountTransaction" OnValidSubmit="HandleSubmit">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group text-center">
+                        <InputRadioGroup Name="btnradio" @bind-Value="AccountTransaction.IsInflow">
+                            <div class="btn-group" role="group">
+                                <InputRadio class="btn-check" Name="btnradio" id="btnradio1" autocomplete="off" Value="@false" />
+                                <label class="btn btn-outline-warning" for="btnradio1">Outflow</label>
+
+                                <InputRadio class="btn-check" Name="btnradio" id="btnradio2" autocomplete="off" Value="@true" />
+                                <label class="btn btn-outline-success" for="btnradio2">Inflow</label>
+                            </div>
+                        </InputRadioGroup>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Date</label>
+                        <InputDate class="form-control" @bind-Value="AccountTransaction.TransactionDate" />
+                    </div>
+
+                    <Condition Evaluation="AccountTransaction.IsInflow">
+                        <Match>
+                            <div class="form-group">
+                                <label class="form-label">Inflow to Account</label>
+                                <InputSelect class="form-control" @bind-Value="AccountToId">
+                                    <option value="">Select an account...</option>
+                                    <Iterations Items="Accounts" Context="account">
+                                        <option value="@account.AccountId">@account.Name</option>
+                                    </Iterations>
+                                </InputSelect>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Payee</label>
+                                <InputText class="form-control" @bind-Value="AccountTransaction.Payee" />
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Category</label>
+                                <InputSelect class="form-control" @bind-Value="CategoryId">
+                                    <option value="">Select a category...</option>
+                                    <Iterations Items="Categories" Context="category">
+                                        <option value="@category.CategoryId">@category.Name</option>
+                                    </Iterations>
+                                </InputSelect>
+
+                                <div><a href="#" @onclick="() => ShowNewCategoryInput = true" @onclick:preventDefault>New Category</a></div>
+
+                                <Condition Evaluation="ShowNewCategoryInput">
+                                    <Match>
+                                        <div>
+                                            <InputText class="form-control form-control-sm" @bind-Value="NewCategory.Name" />
+                                        </div>
+                                        <div>
+                                            <button type="reset" class="btn btn-sm btn-secondary" @onclick='() => ShowNewCategoryInput = false'>Cancel</button>
+
+                                            <Condition Evaluation="DisableCategorySubmit">
+                                                <Match>
+                                                    <button type="button" class="btn btn-sm btn-success" disabled>
+                                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                        Submitting...
+                                                    </button>
+                                                </Match>
+
+                                                <NotMatch>
+                                                    <button type="submit" class="btn btn-sm btn-success" @onclick="HandleCategorySubmit">Submit</button>
+                                                </NotMatch>
+                                            </Condition>
+                                        </div>
+                                    </Match>
+                                </Condition>
+                            </div>
+                        </Match>
+
+                        <NotMatch>
+                            <div class="form-group">
+                                <label class="form-label">Transfer or payment between accounts?</label>
+                                <InputCheckbox @bind-Value="AccountTransaction.IsTransfer" />
+                            </div>
+
+                            <Condition Evaluation="AccountTransaction.IsTransfer">
+                                <Match>
+                                    <div class="form-group">
+                                        <label class="form-label">Transfer/Payment from Account</label>
+                                        <InputSelect class="form-control" @bind-Value="AccountFromId">
+                                            <option value="">Select an account...</option>
+                                            <Iterations Items="Accounts" Context="account">
+                                                <option value="@account.AccountId">@account.Name</option>
+                                            </Iterations>
+                                        </InputSelect>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Transfer/Payment to Account</label>
+                                        <InputSelect class="form-control" @bind-Value="AccountToId">
+                                            <option value="">Select an account...</option>
+                                            <Iterations Items="Accounts" Context="account">
+                                                <option value="@account.AccountId">@account.Name</option>
+                                            </Iterations>
+                                        </InputSelect>
+                                    </div>
+                                </Match>
+
+                                <NotMatch>
+                                    <div class="form-group">
+                                        <label class="form-label">Payment from Account</label>
+                                        <InputSelect class="form-control" @bind-Value="AccountFromId">
+                                            <option value="">Select an account...</option>
+                                            <Iterations Items="Accounts" Context="account">
+                                                <option value="@account.AccountId">@account.Name</option>
+                                            </Iterations>
+                                        </InputSelect>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Payee</label>
+                                        <InputText class="form-control" @bind-Value="AccountTransaction.Payee" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Category</label>
+                                        <InputSelect class="form-control" @bind-Value="CategoryId">
+                                            <option value="">Select a category...</option>
+                                            <Iterations Items="Categories" Context="category">
+                                                <option value="@category.CategoryId">@category.Name</option>
+                                            </Iterations>
+                                        </InputSelect>
+
+                                        <div><a href="#" @onclick="() => ShowNewCategoryInput = true" @onclick:preventDefault>New Category</a></div>
+
+                                        <Condition Evaluation="ShowNewCategoryInput">
+                                            <Match>
+                                                <div>
+                                                    <InputText class="form-control form-control-sm" @bind-Value="NewCategory.Name" />
+                                                </div>
+                                                <div>
+                                                    <button type="reset" class="btn btn-sm btn-secondary" @onclick='() => ShowNewCategoryInput = false'>Cancel</button>
+
+                                                    <Condition Evaluation="DisableCategorySubmit">
+                                                        <Match>
+                                                            <button type="button" class="btn btn-sm btn-success" disabled>
+                                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                                Submitting...
+                                                            </button>
+                                                        </Match>
+
+                                                        <NotMatch>
+                                                            <button type="submit" class="btn btn-sm btn-success" @onclick="HandleCategorySubmit">Submit</button>
+                                                        </NotMatch>
+                                                    </Condition>
+                                                </div>
+                                            </Match>
+                                        </Condition>
+                                    </div>
+                                </NotMatch>
+                            </Condition>
+                        </NotMatch>
+                    </Condition>
+
+                    <div class="form-group">
+                        <label class="form-label">Description</label>
+                        <InputText class="form-control" @bind-Value="AccountTransaction.Description" />
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Amount</label>
+                        <InputNumber class="form-control" step="0.01" min="0" @bind-Value="Amount" />
+                    </div>
+
+                    <div class="form-group text-end">
+                        <button type="reset" class="btn btn-secondary" @onclick='() => Navigation.NavigateTo($"/budget/{BudgetId}")'>Cancel</button>
+
+                        <Condition Evaluation="DisableSubmit">
+                            <Match>
+                                <button type="button" class="btn btn-success" disabled>
+                                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                    Submitting...
+                                </button>
+                            </Match>
+
+                            <NotMatch>
+                                <button type="submit" class="btn btn-success">Submit</button>
+                            </NotMatch>
+                        </Condition>
+                    </div>
+                </div>
+            </div>
+        </EditForm>
+    </Match>
+</Condition>

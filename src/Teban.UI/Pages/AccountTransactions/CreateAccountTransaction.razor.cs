@@ -20,33 +20,162 @@ namespace Teban.UI.Pages.AccountTransactions
         [Inject]
         private IdentityClientService IdentityService { get; set; }
         [Inject]
+        private AccountsService AccountsService { get; set; }
+        [Inject]
         private AccountTransactionsService AccountTransactionsService { get; set; }
         [Inject]
         private TransactionEntriesService TransactionEntriesService { get; set; }
+        [Inject]
+        private CategoriesService CategoriesService { get; set; }
 
         [Parameter]
         public int BudgetId { get; set; }
 
         private TebanUserDto? User { get; set; }
-        private AccountTransaction AccountTransaction { get; set; }
+        private AccountTransaction AccountTransaction { get; set; } = new AccountTransaction();
+        private List<Account> Accounts { get; set; }
+        private List<Category> Categories { get; set; } = new List<Category>();
+        private decimal Amount { get; set; }
+        private int CategoryId { get; set; }
+        private Category NewCategory { get; set; } = new Category();
+        private int AccountFromId { get; set; }
+        private int AccountToId { get; set; }
         private List<string> ErrorMessages { get; set; } = new List<string>();
         private bool ShowErrors { get; set; } = false;
         private bool DisableSubmit { get; set; } = false;
+        private bool ShowNewCategoryInput { get; set; } = false;
+        private bool DisableCategorySubmit { get; set; } = false;
 
         protected override async Task OnInitializedAsync()
         {
             User = await IdentityService.GetUserDetails();
+            await GetAccounts();
+            await GetCategories();
         }
 
         private async Task HandleSubmit()
         {
             DisableSubmit = true;
 
+            AccountTransaction.BudgetId = BudgetId;
+            AccountTransaction.TransactionDate = AccountTransaction.TransactionDate.ToUniversalTime();
+            AccountTransaction.CreatedBy = User.UserId;
+
             var result = await AccountTransactionsService.PostAccountTransaction(AccountTransaction);
 
             if (result.Succeeded)
             {
-                Navigation.NavigateTo("/");
+                AccountTransaction = result.Data;
+
+                List<TransactionEntry> entries = new();
+
+                if (AccountTransaction.IsInflow)
+                {
+                    var accountToEntry = new TransactionEntry
+                    {
+                        Amount = Amount,
+                        AccountId = AccountToId,
+                        CreatedBy = User.UserId,
+                        AccountTransactionId = AccountTransaction.AccountTransactionId
+                    };
+
+                    entries.Add(accountToEntry);
+
+                    var incomeEntry = new TransactionEntry
+                    {
+                        Amount = Amount * -1,
+                        CategoryId = CategoryId,
+                        CreatedBy = User.UserId,
+                        AccountTransactionId = AccountTransaction.AccountTransactionId
+                    };
+
+                    entries.Add(incomeEntry);
+                }
+                else
+                {
+                    if (AccountTransaction.IsTransfer)
+                    {
+                        var accountFromEntry = new TransactionEntry
+                        {
+                            Amount = Amount * -1,
+                            AccountId = AccountFromId,
+                            CreatedBy = User.UserId,
+                            AccountTransactionId = AccountTransaction.AccountTransactionId
+                        };
+
+                        entries.Add(accountFromEntry);
+
+                        var accountToEntry = new TransactionEntry
+                        {
+                            Amount = Amount,
+                            AccountId = AccountToId,
+                            CreatedBy = User.UserId,
+                            AccountTransactionId = AccountTransaction.AccountTransactionId
+                        };
+
+                        entries.Add(accountToEntry);
+                    }
+                    else
+                    {
+                        var accountFromEntry = new TransactionEntry
+                        {
+                            Amount = Amount * -1,
+                            AccountId = AccountFromId,
+                            CreatedBy = User.UserId,
+                            AccountTransactionId = AccountTransaction.AccountTransactionId
+                        };
+
+                        entries.Add(accountFromEntry);
+
+                        var expenseEntry = new TransactionEntry
+                        {
+                            Amount = Amount,
+                            CategoryId = CategoryId,
+                            CreatedBy = User.UserId,
+                            AccountTransactionId = AccountTransaction.AccountTransactionId
+                        };
+
+                        entries.Add(expenseEntry);
+                    }
+                }
+
+                var entriesResult = await TransactionEntriesService.PostTransactionEntryBatch(entries);
+
+                if (entriesResult.Succeeded)
+                {
+                    if (entriesResult.Data > 0)
+                    {
+                        Navigation.NavigateTo($"/budget/{BudgetId}");
+                    }
+                    else
+                    {
+                        if (entriesResult.Errors is not null)
+                        {
+                            ErrorMessages = entriesResult.Errors.ToList();
+                        }
+                        else
+                        {
+                            ErrorMessages = new List<string> { "There was an error creating the transaction. Please refresh or try again later." };
+                        }
+
+                        ShowErrors = true;
+                        DisableSubmit = false;
+                    }
+                }
+                else
+                {
+                    if (entriesResult.Errors is not null)
+                    {
+                        ErrorMessages = entriesResult.Errors.ToList();
+                    }
+                    else
+                    {
+                        ErrorMessages = new List<string> { "There was an error creating the transaction. Please refresh or try again later." };
+                    }
+
+                    ShowErrors = true;
+                    DisableSubmit = false;
+                }
             }
             else
             {
@@ -57,6 +186,123 @@ namespace Teban.UI.Pages.AccountTransactions
                 else
                 {
                     ErrorMessages = new List<string> { "There was an error creating the transaction." };
+                }
+
+                ShowErrors = true;
+                DisableSubmit = false;
+            }
+        }
+
+        private async Task HandleCategorySubmit()
+        {
+            DisableCategorySubmit = true;
+
+            NewCategory.BudgetId = BudgetId;
+
+            var result = await CategoriesService.PostCategory(NewCategory);
+
+            if (result.Succeeded)
+            {
+                await GetCategories();
+                NewCategory = new Category();
+                ShowNewCategoryInput = false;
+                DisableCategorySubmit = false;
+            }
+            else
+            {
+                if (result.Errors is not null)
+                {
+                    ErrorMessages = result.Errors.ToList();
+                }
+                else
+                {
+                    ErrorMessages = new List<string> { "There was an error creating the category." };
+                }
+
+                ShowErrors = true;
+                ShowNewCategoryInput = false;
+                DisableCategorySubmit = false;
+            }
+        }
+
+        private async Task GetAccounts()
+        {
+            var accountsRequest = await AccountsService.GetAccountsByBudget(BudgetId);
+
+            if (accountsRequest.Succeeded)
+            {
+                if (accountsRequest.Data is not null && accountsRequest.Data.Any())
+                {
+                    Accounts = accountsRequest.Data.ToList();
+                }
+                else
+                {
+                    if (accountsRequest.Errors is not null)
+                    {
+                        ErrorMessages = accountsRequest.Errors.ToList();
+                    }
+                    else
+                    {
+                        ErrorMessages = new List<string> { "There was an error retrieving user accounts. Please refresh or try again later." };
+                    }
+
+                    ShowErrors = true;
+                    DisableSubmit = false;
+                }
+            }
+            else
+            {
+                if (accountsRequest.Errors is not null)
+                {
+                    ErrorMessages = accountsRequest.Errors.ToList();
+                }
+                else
+                {
+                    ErrorMessages = new List<string> { "There was an error retrieving user accounts. Please refresh or try again later." };
+                }
+
+                ShowErrors = true;
+                DisableSubmit = false;
+            }
+        }
+
+        private async Task GetCategories()
+        {
+            var categoriesRequest = await CategoriesService.GetCategoriesByBudget(BudgetId);
+
+            if (categoriesRequest.Succeeded)
+            {
+                if (categoriesRequest.Data is not null)
+                {
+                    if (categoriesRequest.Data.Any())
+                    {
+                        Categories = categoriesRequest.Data.ToList();
+                    }
+                }
+                else
+                {
+                    if (categoriesRequest.Errors is not null)
+                    {
+                        ErrorMessages = categoriesRequest.Errors.ToList();
+                    }
+                    else
+                    {
+                        ErrorMessages = new List<string> { "There was an error retrieving user categories. Please refresh or try again later." };
+                    }
+
+                    ShowErrors = true;
+                    DisableSubmit = false;
+                }
+            }
+            else
+            {
+                if (categoriesRequest.Errors is not null)
+                {
+                    ErrorMessages = categoriesRequest.Errors.ToList();
+                }
+                else
+                {
+                    ErrorMessages = new List<string> { "There was an error retrieving user categories. Please refresh or try again later." };
                 }
 
                 ShowErrors = true;

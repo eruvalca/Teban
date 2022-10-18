@@ -18,6 +18,27 @@ namespace Teban.UI.Services
             _httpClient = httpClient;
         }
 
+        public async Task<RequestResponseDto<IEnumerable<Category>>> GetCategoriesByBudget(int id)
+        {
+            RequestResponseDto<IEnumerable<Category>>? response;
+
+            try
+            {
+                response = await _httpClient.GetFromJsonAsync<RequestResponseDto<IEnumerable<Category>>>($"categories/budget/{id}");
+            }
+            catch (Exception ex)
+            {
+                return RequestResponseDto<IEnumerable<Category>>.Failure(new string[] { ex.Message });
+            }
+
+            if (response is null)
+            {
+                return RequestResponseDto<IEnumerable<Category>>.Failure(new string[] { "There was an error retrieving the categories." });
+            }
+
+            return response;
+        }
+
         public async Task<RequestResponseDto<Category>> GetCategory(int id)
         {
             RequestResponseDto<Category>? response;

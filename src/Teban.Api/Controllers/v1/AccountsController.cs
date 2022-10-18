@@ -21,6 +21,22 @@ namespace Teban.Api.Controllers.v1
             _context = context;
         }
 
+        [HttpGet("budget/{id}")]
+        public async Task<IActionResult> GetAccountsByBudget(int id)
+        {
+            var accounts = await _context.Accounts
+                .Where(a => a.BudgetId == id)
+                .ToListAsync();
+
+            if (accounts is null)
+            {
+                return NotFound();
+            }
+
+            var successResponse = RequestResponseDto<IEnumerable<Account>>.Success(accounts);
+            return Ok(successResponse);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAccount(int id)
         {
@@ -34,8 +50,6 @@ namespace Teban.Api.Controllers.v1
 
             var resultSet = await _context.Accounts
                 .Where(a => a.AccountId == id)
-                .Include(a => a.AccountTransactions)
-                    .ThenInclude(at => at.TransactionEntries)
                 .ToListAsync();
 
             var successResponse = RequestResponseDto<Account>.Success(resultSet.First());

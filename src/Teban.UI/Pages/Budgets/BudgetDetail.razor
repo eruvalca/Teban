@@ -10,11 +10,15 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-12 text-center">
-                        <a href="/transaction/new/@BudgetId">New Transaction</a>
-                    </div>
-                </div>
+                <Condition Evaluation="Budget.Accounts is not null && Budget.Accounts.Any()">
+                    <Match>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <a href="/transaction/new/@BudgetId">New Transaction</a>
+                            </div>
+                        </div>
+                    </Match>
+                </Condition>
 
                 <div class="row">
                     <div class="col-12">
@@ -24,7 +28,7 @@
                     <Condition Evaluation="Budget.Accounts is not null && Budget.Accounts.Any()">
                         <Match>
                             <div class="col-12">
-                                <AccountsList Accounts="Budget.Accounts" />
+                                <AccountsList Accounts="Budget.Accounts" TransactionEntries="Budget.AccountTransactions.SelectMany(a => a.TransactionEntries)" />
                             </div>
                         </Match>
 

@@ -4,7 +4,7 @@
             <tr>
                 <td>@context.Name</td>
                 <td class='text-end @(context.AccountType == AccountType.Debit ? "text-success" : "text-danger")'>
-                    @context.GetAccountBalance().ToString("C")
+                    @context.GetAccountBalance(TransactionEntries.Where(t => t.AccountId == context.AccountId)).ToString("C")
                 </td>
             </tr>
         </Iterations>

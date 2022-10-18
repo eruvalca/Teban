@@ -10,7 +10,7 @@ using Teban.Infrastructure.Persistence;
 namespace Teban.Api.Controllers.v1
 {
     [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class AccountTransactionsController : ControllerBase
     {
@@ -75,7 +75,6 @@ namespace Teban.Api.Controllers.v1
 
             existingAccountTransaction.Description = accountTransaction.Description;
             existingAccountTransaction.Payee = accountTransaction.Payee;
-            existingAccountTransaction.Category = accountTransaction.Category;
 
             _context.Entry(existingAccountTransaction).State = EntityState.Modified;
 

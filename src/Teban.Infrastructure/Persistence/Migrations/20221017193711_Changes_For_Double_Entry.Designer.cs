@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Teban.Infrastructure.Persistence;
 
@@ -11,9 +12,10 @@ using Teban.Infrastructure.Persistence;
 namespace Teban.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221017193711_Changes_For_Double_Entry")]
+    partial class Changes_For_Double_Entry
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,15 +53,15 @@ namespace Teban.Infrastructure.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "288658eb-901e-4e84-9692-ce702e57b493",
-                            ConcurrencyStamp = "aa494bc9-5ac4-4818-9d74-9804e67d6630",
+                            Id = "120112d6-2e8d-497f-87b4-4694cd0b5a9e",
+                            ConcurrencyStamp = "dd1ed4fc-42ac-4a8e-a5ea-f3d15a18240f",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "1efeb0e7-1f87-469a-9e18-36fbfffcf9de",
-                            ConcurrencyStamp = "7cfb2e03-b0bd-4f0f-85e4-c65dfe1b55e5",
+                            Id = "2a71b8a5-4446-452a-bd9d-9caec4e82749",
+                            ConcurrencyStamp = "f526a0d4-2eee-45ac-aadf-460f49c2b2d3",
                             Name = "General",
                             NormalizedName = "GENERAL"
                         });
@@ -242,9 +244,6 @@ namespace Teban.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsInflow")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsTransfer")
                         .HasColumnType("bit");
 
@@ -256,9 +255,6 @@ namespace Teban.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Payee")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("TransactionDate")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("AccountTransactionId");
 
@@ -311,7 +307,7 @@ namespace Teban.Infrastructure.Persistence.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"), 1L, 1);
 
-                    b.Property<int>("BudgetId")
+                    b.Property<int>("CategoryGroupId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -320,9 +316,31 @@ namespace Teban.Infrastructure.Persistence.Migrations
 
                     b.HasKey("CategoryId");
 
-                    b.HasIndex("BudgetId");
+                    b.HasIndex("CategoryGroupId");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("Teban.Domain.Entities.CategoryGroup", b =>
+                {
+                    b.Property<int>("CategoryGroupId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryGroupId"), 1L, 1);
+
+                    b.Property<int>("BudgetId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CategoryGroupId");
+
+                    b.HasIndex("BudgetId");
+
+                    b.ToTable("CategoryGroups");
                 });
 
             modelBuilder.Entity("Teban.Domain.Entities.TransactionEntry", b =>
@@ -526,8 +544,17 @@ namespace Teban.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Teban.Domain.Entities.Category", b =>
                 {
-                    b.HasOne("Teban.Domain.Entities.Budget", null)
+                    b.HasOne("Teban.Domain.Entities.CategoryGroup", null)
                         .WithMany("Categories")
+                        .HasForeignKey("CategoryGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Teban.Domain.Entities.CategoryGroup", b =>
+                {
+                    b.HasOne("Teban.Domain.Entities.Budget", null)
+                        .WithMany("CategoryGroups")
                         .HasForeignKey("BudgetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -556,6 +583,11 @@ namespace Teban.Infrastructure.Persistence.Migrations
                 {
                     b.Navigation("Accounts");
 
+                    b.Navigation("CategoryGroups");
+                });
+
+            modelBuilder.Entity("Teban.Domain.Entities.CategoryGroup", b =>
+                {
                     b.Navigation("Categories");
                 });
 

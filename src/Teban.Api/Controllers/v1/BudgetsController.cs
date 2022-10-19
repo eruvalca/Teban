@@ -59,7 +59,6 @@ namespace Teban.Api.Controllers.v1
                 .Where(b => b.TebanUserId == HttpContext.GetUserId()
                     && b.BudgetId == id)
                 .Include(b => b.Accounts)
-                .Include(b => b.Categories)
                 .Include(b => b.AccountTransactions)
                     .ThenInclude(at => at.TransactionEntries)
                 .ToListAsync();

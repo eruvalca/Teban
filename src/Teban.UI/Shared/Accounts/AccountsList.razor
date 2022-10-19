@@ -1,12 +1,18 @@
 ﻿<table class="table">
     <tbody>
-        <Iterations Items="Accounts">
+        <Iterations Items="Accounts.Where(a => a.AccountType != AccountType.Category)">
             <tr>
                 <td>@context.Name</td>
                 <td class='text-end @(context.AccountType == AccountType.Debit ? "text-success" : "text-danger")'>
-                    @context.GetAccountBalance(TransactionEntries.Where(t => t.AccountId == context.AccountId)).ToString("C")
+                    @context.GetAccountBalance(Transactions.Where(t => t.TransactionEntries.Any(te => te.AccountId == context.AccountId))).ToString("C")
                 </td>
             </tr>
         </Iterations>
+        <tr>
+            <td><strong>Net</strong></td>
+            <td class='text-end @(GetNet() > 0 ? "text-success" : "text-danger")'>
+                <strong>@GetNet().ToString("C")</strong>
+            </td>
+        </tr>
     </tbody>
 </table>

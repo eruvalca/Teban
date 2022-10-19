@@ -52,7 +52,7 @@ namespace Teban.UI.Pages.Accounts
 
             if (result.Succeeded)
             {
-                Navigation.NavigateTo("/");
+                Navigation.NavigateTo($"/budget/{BudgetId}");
             }
             else
             {

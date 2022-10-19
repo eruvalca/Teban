@@ -73,8 +73,11 @@ namespace Teban.Api.Controllers.v1
                 return NotFound(errorResponse);
             }
 
+            existingAccountTransaction.TransactionDate = accountTransaction.TransactionDate;
             existingAccountTransaction.Description = accountTransaction.Description;
             existingAccountTransaction.Payee = accountTransaction.Payee;
+            existingAccountTransaction.IsTransfer = accountTransaction.IsTransfer;
+            existingAccountTransaction.IsInflow = accountTransaction.IsInflow;
 
             _context.Entry(existingAccountTransaction).State = EntityState.Modified;
 

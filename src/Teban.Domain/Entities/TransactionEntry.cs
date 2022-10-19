@@ -8,7 +8,6 @@ namespace Teban.Domain.Entities
         public decimal Amount { get; set; }
 
         public int AccountTransactionId { get; set; }
-        public int? AccountId { get; set; }
-        public int? CategoryId { get; set; }
+        public int AccountId { get; set; }
     }
 }

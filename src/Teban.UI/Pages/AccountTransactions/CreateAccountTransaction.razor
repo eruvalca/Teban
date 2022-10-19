@@ -20,7 +20,7 @@
     </Match>
 </Condition>
 
-<Condition Evaluation="User is not null && Accounts is not null && Categories is not null">
+<Condition Evaluation="User is not null && Accounts is not null">
     <Match>
         <EditForm Model="AccountTransaction" OnValidSubmit="HandleSubmit">
             <div class="row">
@@ -38,6 +38,11 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="form-label">Amount</label>
+                        <InputNumber class="form-control" step="0.01" min="0" @bind-Value="Amount" />
+                    </div>
+
+                    <div class="form-group">
                         <label class="form-label">Date</label>
                         <InputDate class="form-control" @bind-Value="AccountTransaction.TransactionDate" />
                     </div>
@@ -48,7 +53,7 @@
                                 <label class="form-label">Inflow to Account</label>
                                 <InputSelect class="form-control" @bind-Value="AccountToId">
                                     <option value="">Select an account...</option>
-                                    <Iterations Items="Accounts" Context="account">
+                                    <Iterations Items="Accounts.Where(a => a.AccountType != AccountType.Category)" Context="account">
                                         <option value="@account.AccountId">@account.Name</option>
                                     </Iterations>
                                 </InputSelect>
@@ -63,8 +68,8 @@
                                 <label class="form-label">Category</label>
                                 <InputSelect class="form-control" @bind-Value="CategoryId">
                                     <option value="">Select a category...</option>
-                                    <Iterations Items="Categories" Context="category">
-                                        <option value="@category.CategoryId">@category.Name</option>
+                                    <Iterations Items="Accounts.Where(a => a.AccountType == AccountType.Category)" Context="category">
+                                        <option value="@category.AccountId">@category.Name</option>
                                     </Iterations>
                                 </InputSelect>
 
@@ -73,7 +78,7 @@
                                 <Condition Evaluation="ShowNewCategoryInput">
                                     <Match>
                                         <div>
-                                            <InputText class="form-control form-control-sm" @bind-Value="NewCategory.Name" />
+                                            <InputText class="form-control form-control-sm" @bind-Value="NewCategoryAccount.Name" />
                                         </div>
                                         <div>
                                             <button type="reset" class="btn btn-sm btn-secondary" @onclick='() => ShowNewCategoryInput = false'>Cancel</button>
@@ -98,7 +103,7 @@
 
                         <NotMatch>
                             <div class="form-group">
-                                <label class="form-label">Transfer or payment between accounts?</label>
+                                <label class="form-label">Transfer or payment between accounts? </label>
                                 <InputCheckbox @bind-Value="AccountTransaction.IsTransfer" />
                             </div>
 
@@ -108,7 +113,7 @@
                                         <label class="form-label">Transfer/Payment from Account</label>
                                         <InputSelect class="form-control" @bind-Value="AccountFromId">
                                             <option value="">Select an account...</option>
-                                            <Iterations Items="Accounts" Context="account">
+                                            <Iterations Items="Accounts.Where(a => a.AccountType != AccountType.Category)" Context="account">
                                                 <option value="@account.AccountId">@account.Name</option>
                                             </Iterations>
                                         </InputSelect>
@@ -118,7 +123,7 @@
                                         <label class="form-label">Transfer/Payment to Account</label>
                                         <InputSelect class="form-control" @bind-Value="AccountToId">
                                             <option value="">Select an account...</option>
-                                            <Iterations Items="Accounts" Context="account">
+                                            <Iterations Items="Accounts.Where(a => a.AccountType != AccountType.Category)" Context="account">
                                                 <option value="@account.AccountId">@account.Name</option>
                                             </Iterations>
                                         </InputSelect>
@@ -130,7 +135,7 @@
                                         <label class="form-label">Payment from Account</label>
                                         <InputSelect class="form-control" @bind-Value="AccountFromId">
                                             <option value="">Select an account...</option>
-                                            <Iterations Items="Accounts" Context="account">
+                                            <Iterations Items="Accounts.Where(a => a.AccountType != AccountType.Category)" Context="account">
                                                 <option value="@account.AccountId">@account.Name</option>
                                             </Iterations>
                                         </InputSelect>
@@ -145,8 +150,8 @@
                                         <label class="form-label">Category</label>
                                         <InputSelect class="form-control" @bind-Value="CategoryId">
                                             <option value="">Select a category...</option>
-                                            <Iterations Items="Categories" Context="category">
-                                                <option value="@category.CategoryId">@category.Name</option>
+                                            <Iterations Items="Accounts.Where(a => a.AccountType == AccountType.Category)" Context="category">
+                                                <option value="@category.AccountId">@category.Name</option>
                                             </Iterations>
                                         </InputSelect>
 
@@ -155,7 +160,7 @@
                                         <Condition Evaluation="ShowNewCategoryInput">
                                             <Match>
                                                 <div>
-                                                    <InputText class="form-control form-control-sm" @bind-Value="NewCategory.Name" />
+                                                    <InputText class="form-control form-control-sm" @bind-Value="NewCategoryAccount.Name" />
                                                 </div>
                                                 <div>
                                                     <button type="reset" class="btn btn-sm btn-secondary" @onclick='() => ShowNewCategoryInput = false'>Cancel</button>
@@ -184,11 +189,6 @@
                     <div class="form-group">
                         <label class="form-label">Description</label>
                         <InputText class="form-control" @bind-Value="AccountTransaction.Description" />
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Amount</label>
-                        <InputNumber class="form-control" step="0.01" min="0" @bind-Value="Amount" />
                     </div>
 
                     <div class="form-group text-end">

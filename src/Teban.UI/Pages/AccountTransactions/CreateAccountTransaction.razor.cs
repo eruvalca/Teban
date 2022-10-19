@@ -25,8 +25,6 @@ namespace Teban.UI.Pages.AccountTransactions
         private AccountTransactionsService AccountTransactionsService { get; set; }
         [Inject]
         private TransactionEntriesService TransactionEntriesService { get; set; }
-        [Inject]
-        private CategoriesService CategoriesService { get; set; }
 
         [Parameter]
         public int BudgetId { get; set; }
@@ -34,10 +32,9 @@ namespace Teban.UI.Pages.AccountTransactions
         private TebanUserDto? User { get; set; }
         private AccountTransaction AccountTransaction { get; set; } = new AccountTransaction();
         private List<Account> Accounts { get; set; }
-        private List<Category> Categories { get; set; } = new List<Category>();
-        private decimal Amount { get; set; }
+        private Account NewCategoryAccount { get; set; } = new();
         private int CategoryId { get; set; }
-        private Category NewCategory { get; set; } = new Category();
+        private decimal Amount { get; set; }
         private int AccountFromId { get; set; }
         private int AccountToId { get; set; }
         private List<string> ErrorMessages { get; set; } = new List<string>();
@@ -50,7 +47,6 @@ namespace Teban.UI.Pages.AccountTransactions
         {
             User = await IdentityService.GetUserDetails();
             await GetAccounts();
-            await GetCategories();
         }
 
         private async Task HandleSubmit()
@@ -84,7 +80,7 @@ namespace Teban.UI.Pages.AccountTransactions
                     var incomeEntry = new TransactionEntry
                     {
                         Amount = Amount * -1,
-                        CategoryId = CategoryId,
+                        AccountId = CategoryId,
                         CreatedBy = User.UserId,
                         AccountTransactionId = AccountTransaction.AccountTransactionId
                     };
@@ -130,7 +126,7 @@ namespace Teban.UI.Pages.AccountTransactions
                         var expenseEntry = new TransactionEntry
                         {
                             Amount = Amount,
-                            CategoryId = CategoryId,
+                            AccountId = CategoryId,
                             CreatedBy = User.UserId,
                             AccountTransactionId = AccountTransaction.AccountTransactionId
                         };
@@ -197,14 +193,16 @@ namespace Teban.UI.Pages.AccountTransactions
         {
             DisableCategorySubmit = true;
 
-            NewCategory.BudgetId = BudgetId;
+            NewCategoryAccount.AccountType = AccountType.Category;
+            NewCategoryAccount.BudgetId = BudgetId;
+            NewCategoryAccount.CreatedBy = User.UserId;
 
-            var result = await CategoriesService.PostCategory(NewCategory);
+            var result = await AccountsService.PostAccount(NewCategoryAccount);
 
             if (result.Succeeded)
             {
-                await GetCategories();
-                NewCategory = new Category();
+                await GetAccounts();
+                NewCategoryAccount = new Account();
                 ShowNewCategoryInput = false;
                 DisableCategorySubmit = false;
             }
@@ -259,50 +257,6 @@ namespace Teban.UI.Pages.AccountTransactions
                 else
                 {
                     ErrorMessages = new List<string> { "There was an error retrieving user accounts. Please refresh or try again later." };
-                }
-
-                ShowErrors = true;
-                DisableSubmit = false;
-            }
-        }
-
-        private async Task GetCategories()
-        {
-            var categoriesRequest = await CategoriesService.GetCategoriesByBudget(BudgetId);
-
-            if (categoriesRequest.Succeeded)
-            {
-                if (categoriesRequest.Data is not null)
-                {
-                    if (categoriesRequest.Data.Any())
-                    {
-                        Categories = categoriesRequest.Data.ToList();
-                    }
-                }
-                else
-                {
-                    if (categoriesRequest.Errors is not null)
-                    {
-                        ErrorMessages = categoriesRequest.Errors.ToList();
-                    }
-                    else
-                    {
-                        ErrorMessages = new List<string> { "There was an error retrieving user categories. Please refresh or try again later." };
-                    }
-
-                    ShowErrors = true;
-                    DisableSubmit = false;
-                }
-            }
-            else
-            {
-                if (categoriesRequest.Errors is not null)
-                {
-                    ErrorMessages = categoriesRequest.Errors.ToList();
-                }
-                else
-                {
-                    ErrorMessages = new List<string> { "There was an error retrieving user categories. Please refresh or try again later." };
                 }
 
                 ShowErrors = true;

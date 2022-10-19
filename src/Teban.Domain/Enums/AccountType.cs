@@ -3,6 +3,7 @@
     public enum AccountType
     {
         Debit,
-        Credit
+        Credit,
+        Category
     }
 }

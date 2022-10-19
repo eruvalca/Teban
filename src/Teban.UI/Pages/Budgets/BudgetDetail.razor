@@ -28,7 +28,7 @@
                     <Condition Evaluation="Budget.Accounts is not null && Budget.Accounts.Any()">
                         <Match>
                             <div class="col-12">
-                                <AccountsList Accounts="Budget.Accounts" TransactionEntries="Budget.AccountTransactions.SelectMany(a => a.TransactionEntries)" />
+                                <AccountsList Accounts="Budget.Accounts" Transactions="Budget.AccountTransactions" />
                             </div>
                         </Match>
 

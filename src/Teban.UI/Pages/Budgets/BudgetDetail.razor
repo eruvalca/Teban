@@ -10,7 +10,7 @@
                     </div>
                 </div>
 
-                <MonthYearPicker />
+                <MonthYearPicker SelectedMonthYear="SelectedMonthYear" MonthYearCallback="IncrementSelectedMonthYear" />
 
                 <Condition Evaluation="Budget.Accounts is not null && Budget.Accounts.Any()">
                     <Match>
@@ -22,25 +22,20 @@
                     </Match>
                 </Condition>
 
-                <div class="row">
-                    <div class="col-12">
-                        <h5>Accounts <small><a href="/account/new/@BudgetId">Add account</a></small></h5>
-                    </div>
+                <Condition Evaluation="Budget.Accounts is not null && Budget.Accounts.Any()">
+                    <Match>
+                        <CategoriesList Accounts="Budget.Accounts" Transactions="Budget.AccountTransactions" MonthYear="SelectedMonthYear" />
+                        <AccountsList Accounts="Budget.Accounts" Transactions="Budget.AccountTransactions" />
+                    </Match>
 
-                    <Condition Evaluation="Budget.Accounts is not null && Budget.Accounts.Any()">
-                        <Match>
-                            <div class="col-12">
-                                <AccountsList Accounts="Budget.Accounts" Transactions="Budget.AccountTransactions" />
-                            </div>
-                        </Match>
-
-                        <NotMatch>
+                    <NotMatch>
+                        <div class="row">
                             <div class="col-12">
                                 <p>You haven't added any accounts.</p>
                             </div>
-                        </NotMatch>
-                    </Condition>
-                </div>
+                        </div>
+                    </NotMatch>
+                </Condition>
             </Match>
         </Condition>
     </Match>

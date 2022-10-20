@@ -1,18 +1,29 @@
-﻿<table class="table">
-    <tbody>
-        <Iterations Items="Accounts.Where(a => a.AccountType != AccountType.Category)">
-            <tr>
-                <td>@context.Name</td>
-                <td class='text-end @(context.AccountType == AccountType.Debit ? "text-success" : "text-danger")'>
-                    @context.GetAccountBalance(Transactions.Where(t => t.TransactionEntries.Any(te => te.AccountId == context.AccountId))).ToString("C")
-                </td>
-            </tr>
-        </Iterations>
-        <tr>
-            <td><strong>Net</strong></td>
-            <td class='text-end @(GetNet() > 0 ? "text-success" : "text-danger")'>
-                <strong>@GetNet().ToString("C")</strong>
-            </td>
-        </tr>
-    </tbody>
-</table>
+﻿
+<div class="row">
+    <div class="col-12">
+        <h5>Accounts <small><a href="/account/new/@Accounts.First().BudgetId">Add account</a></small></h5>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <table class="table">
+            <tbody>
+                <Iterations Items="Accounts.Where(a => a.AccountType != AccountType.Category).OrderBy(a => a.Name)">
+                    <tr>
+                        <td>@context.Name</td>
+                        <td class='text-end @(context.AccountType == AccountType.Debit ? "text-success" : "text-danger")'>
+                            @context.GetAccountBalance(Transactions.Where(t => t.TransactionEntries.Any(te => te.AccountId == context.AccountId))).ToString("C")
+                        </td>
+                    </tr>
+                </Iterations>
+                <tr>
+                    <td><strong>Net</strong></td>
+                    <td class='text-end @(GetNet() > 0 ? "text-success" : "text-danger")'>
+                        <strong>@GetNet().ToString("C")</strong>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

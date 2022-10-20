@@ -1,0 +1,29 @@
+﻿
+<div class="row">
+    <div class="col-12">
+        <h5>Categories</h5>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <table class="table">
+            <tbody>
+                <Iterations Items="Accounts.Where(a => a.AccountType == AccountType.Category).OrderBy(a => a.Name)">
+                    <tr>
+                        <td>@context.Name</td>
+                        <td class="text-end">
+                            @context.GetAccountBalance(Transactions.Where(t => t.TransactionEntries.Any(te => te.AccountId == context.AccountId)), StartDate, EndDate).ToString("C")
+                        </td>
+                    </tr>
+                </Iterations>
+                <tr>
+                    <td><strong>Net</strong></td>
+                    <td class="text-end">
+                        <strong>@GetNet().ToString("C")</strong>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -35,7 +35,7 @@ namespace Teban.Domain.Entities
 
             var filteredTransactions = transactions
                 .Where(t => t.TransactionDate.ToUniversalTime().Date >= startDate.ToUniversalTime().Date
-                    && t.TransactionDate.ToUniversalTime().Date <= endDate.ToUniversalTime().Date);
+                    && t.TransactionDate.ToUniversalTime().Date < endDate.ToUniversalTime().Date);
 
             foreach (var transaction in filteredTransactions)
             {

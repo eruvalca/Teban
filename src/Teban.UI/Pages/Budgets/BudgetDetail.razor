@@ -16,7 +16,7 @@
                     <Match>
                         <div class="row">
                             <div class="col-12 text-center">
-                                <button class="btn btn-success" @onclick='() => Navigation.NavigateTo($"/transaction/new/{BudgetId}")'>New Transaction</button>
+                                <button class="btn btn-success mb-2" @onclick='() => Navigation.NavigateTo($"/transaction/new/{BudgetId}")'>New Transaction</button>
                             </div>
                         </div>
                     </Match>
@@ -39,4 +39,12 @@
             </Match>
         </Condition>
     </Match>
+
+    <NotMatch>
+        <div class="row">
+            <div class="col-12 text-center">
+                <LoadingSpinner MarginTop="50" />
+            </div>
+        </div>
+    </NotMatch>
 </Condition>

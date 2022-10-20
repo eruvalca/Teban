@@ -53,7 +53,8 @@
                                 <label class="form-label">Inflow to Account</label>
                                 <InputSelect class="form-control" @bind-Value="AccountToId">
                                     <option value="">Select an account...</option>
-                                    <Iterations Items="Accounts.Where(a => a.AccountType != AccountType.Category)" Context="account">
+                                    <Iterations Items="Accounts.Where(a => a.AccountType != AccountType.Category).OrderBy(a => a.Name)"
+                                                Context="account">
                                         <option value="@account.AccountId">@account.Name</option>
                                     </Iterations>
                                 </InputSelect>
@@ -68,7 +69,8 @@
                                 <label class="form-label">Category</label>
                                 <InputSelect class="form-control" @bind-Value="CategoryId">
                                     <option value="">Select a category...</option>
-                                    <Iterations Items="Accounts.Where(a => a.AccountType == AccountType.Category)" Context="category">
+                                    <Iterations Items="Accounts.Where(a => a.AccountType == AccountType.Category).OrderBy(a => a.Name)"
+                                                Context="category">
                                         <option value="@category.AccountId">@category.Name</option>
                                     </Iterations>
                                 </InputSelect>
@@ -113,7 +115,8 @@
                                         <label class="form-label">Transfer/Payment from Account</label>
                                         <InputSelect class="form-control" @bind-Value="AccountFromId">
                                             <option value="">Select an account...</option>
-                                            <Iterations Items="Accounts.Where(a => a.AccountType != AccountType.Category)" Context="account">
+                                            <Iterations Items="Accounts.Where(a => a.AccountType != AccountType.Category).OrderBy(a => a.Name)"
+                                                        Context="account">
                                                 <option value="@account.AccountId">@account.Name</option>
                                             </Iterations>
                                         </InputSelect>
@@ -123,7 +126,8 @@
                                         <label class="form-label">Transfer/Payment to Account</label>
                                         <InputSelect class="form-control" @bind-Value="AccountToId">
                                             <option value="">Select an account...</option>
-                                            <Iterations Items="Accounts.Where(a => a.AccountType != AccountType.Category)" Context="account">
+                                            <Iterations Items="Accounts.Where(a => a.AccountType != AccountType.Category).OrderBy(a => a.Name)"
+                                                        Context="account">
                                                 <option value="@account.AccountId">@account.Name</option>
                                             </Iterations>
                                         </InputSelect>
@@ -135,7 +139,8 @@
                                         <label class="form-label">Payment from Account</label>
                                         <InputSelect class="form-control" @bind-Value="AccountFromId">
                                             <option value="">Select an account...</option>
-                                            <Iterations Items="Accounts.Where(a => a.AccountType != AccountType.Category)" Context="account">
+                                            <Iterations Items="Accounts.Where(a => a.AccountType != AccountType.Category).OrderBy(a => a.Name)"
+                                                        Context="account">
                                                 <option value="@account.AccountId">@account.Name</option>
                                             </Iterations>
                                         </InputSelect>
@@ -150,7 +155,8 @@
                                         <label class="form-label">Category</label>
                                         <InputSelect class="form-control" @bind-Value="CategoryId">
                                             <option value="">Select a category...</option>
-                                            <Iterations Items="Accounts.Where(a => a.AccountType == AccountType.Category)" Context="category">
+                                            <Iterations Items="Accounts.Where(a => a.AccountType == AccountType.Category).OrderBy(a => a.Name)"
+                                                        Context="category">
                                                 <option value="@category.AccountId">@category.Name</option>
                                             </Iterations>
                                         </InputSelect>

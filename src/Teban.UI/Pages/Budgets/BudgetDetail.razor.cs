@@ -26,7 +26,7 @@ namespace Teban.UI.Pages.Budgets
 
         private TebanUserDto User { get; set; }
         private Budget Budget { get; set; }
-        private DateTime SelectedMonthYear { get; set; } = DateTime.UtcNow;
+        private DateTime SelectedMonthYear { get; set; } = DateTime.Today;
         private List<string> ErrorMessages { get; set; } = new List<string>();
         private bool ShowErrors { get; set; } = false;
 

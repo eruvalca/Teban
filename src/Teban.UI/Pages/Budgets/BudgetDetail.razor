@@ -24,7 +24,7 @@
 
                 <Condition Evaluation="Budget.Accounts is not null && Budget.Accounts.Any()">
                     <Match>
-                        <CategoriesList Accounts="Budget.Accounts" Transactions="Budget.AccountTransactions" MonthYear="SelectedMonthYear" />
+                        <CategoriesList Accounts="Budget.Accounts" Transactions="Budget.AccountTransactions" MonthYear="SelectedMonthYear" UserId="User.UserId" />
                         <AccountsList Accounts="Budget.Accounts" Transactions="Budget.AccountTransactions" />
                     </Match>
 

@@ -12,6 +12,6 @@ namespace Teban.Domain.Entities
         public bool IsInflow { get; set; }
 
         public int BudgetId { get; set; }
-        public ICollection<TransactionEntry>? TransactionEntries { get; set; }
+        public List<TransactionEntry>? TransactionEntries { get; set; }
     }
 }

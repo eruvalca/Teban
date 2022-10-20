@@ -29,6 +29,7 @@ builder.Services.AddScoped<BudgetsService>();
 builder.Services.AddScoped<AccountsService>();
 builder.Services.AddScoped<AccountTransactionsService>();
 builder.Services.AddScoped<TransactionEntriesService>();
+builder.Services.AddScoped<MonthlyCategoryBudgetsService>();
 
 builder.Services.AddAuthorizationCore();
 

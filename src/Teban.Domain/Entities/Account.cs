@@ -11,8 +11,9 @@ namespace Teban.Domain.Entities
         public AccountType AccountType { get; set; }
 
         public int BudgetId { get; set; }
+        public List<MonthlyCategoryBudget>? MonthlyCategoryBudgets { get; set; }
 
-        public decimal GetAccountBalance(IEnumerable<AccountTransaction> transactions)
+        public decimal GetAccountBalance(List<AccountTransaction> transactions)
         {
             var balance = StartingBalance;
 
@@ -29,13 +30,13 @@ namespace Teban.Domain.Entities
             return balance;
         }
 
-        public decimal GetAccountBalance(IEnumerable<AccountTransaction> transactions, DateTime startDate, DateTime endDate)
+        public decimal GetAccountBalance(List<AccountTransaction> transactions, DateTime startDate, DateTime endDate)
         {
             var balance = StartingBalance;
 
             var filteredTransactions = transactions
-                .Where(t => t.TransactionDate.ToUniversalTime().Date >= startDate.ToUniversalTime().Date
-                    && t.TransactionDate.ToUniversalTime().Date < endDate.ToUniversalTime().Date);
+                .Where(t => t.TransactionDate.Date >= startDate.Date
+                    && t.TransactionDate.Date < endDate.Date);
 
             foreach (var transaction in filteredTransactions)
             {
@@ -48,6 +49,57 @@ namespace Teban.Domain.Entities
             }
 
             return balance;
+        }
+
+        public decimal GetRemainingBalance(List<AccountTransaction> transactions, DateTime startDate, DateTime endDate)
+        {
+            var balance = StartingBalance;
+            var matchingMonthlyCategoryBudgetAmount = 0M;
+
+            var filteredTransactions = transactions
+                .Where(t => t.TransactionDate.Date >= startDate.Date
+                    && t.TransactionDate.Date < endDate.Date);
+
+            foreach (var transaction in filteredTransactions)
+            {
+                if (transaction.TransactionEntries is not null && transaction.TransactionEntries.Any())
+                {
+                    balance += transaction.TransactionEntries
+                        .Where(t => t.AccountId == AccountId)
+                        .Sum(t => t.Amount);
+                }
+            }
+
+            if (MonthlyCategoryBudgets is not null && MonthlyCategoryBudgets.Any())
+            {
+                var matchingMonthlyCategoryBudget = MonthlyCategoryBudgets
+                    .Where(m => m.MonthYear.Month == startDate.Month
+                        && m.MonthYear.Year == startDate.Year);
+
+                if (matchingMonthlyCategoryBudget is not null)
+                {
+                    matchingMonthlyCategoryBudgetAmount = matchingMonthlyCategoryBudget.First().Amount;
+                }
+            }
+
+            return matchingMonthlyCategoryBudgetAmount - balance;
+        }
+
+        public decimal GetBudgetedBalance(DateTime startDate)
+        {
+            if (MonthlyCategoryBudgets is not null && MonthlyCategoryBudgets.Any())
+            {
+                var matchingMonthlyCategoryBudget = MonthlyCategoryBudgets
+                    .Where(m => m.MonthYear.Month == startDate.Month
+                        && m.MonthYear.Year == startDate.Year);
+
+                if (matchingMonthlyCategoryBudget is not null)
+                {
+                    return matchingMonthlyCategoryBudget.First().Amount;
+                }
+            }
+
+            return 0M;
         }
     }
 }

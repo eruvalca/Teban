@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Teban.Infrastructure.Persistence;
 
@@ -11,9 +12,10 @@ using Teban.Infrastructure.Persistence;
 namespace Teban.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221020015905_Adding_Monthly_Category_Budgets")]
+    partial class Adding_Monthly_Category_Budgets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,15 +53,15 @@ namespace Teban.Infrastructure.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "15d239b1-5079-4f48-b2e4-d095f087d193",
-                            ConcurrencyStamp = "f86797a7-4098-4996-bc5d-92dd82fb889b",
+                            Id = "1448922c-517f-4087-bcf1-c1ab47cf5a92",
+                            ConcurrencyStamp = "7dd187a1-5704-4d7c-a2d4-ae10b8074229",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "facc3663-8096-42e9-8853-693de015ee74",
-                            ConcurrencyStamp = "713c8f0a-ed96-4a02-91fd-77c48e463acb",
+                            Id = "60fa1c01-5e04-49a0-b5d5-d80bb67b3812",
+                            ConcurrencyStamp = "8df3334c-bd8d-4f25-937f-89df4602112f",
                             Name = "General",
                             NormalizedName = "GENERAL"
                         });
@@ -313,6 +315,9 @@ namespace Teban.Infrastructure.Persistence.Migrations
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("money");
+
+                    b.Property<int>("BudgetId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");

@@ -10,6 +10,7 @@ namespace Teban.Application.Interfaces
         public DbSet<Account> Accounts { get; }
         public DbSet<AccountTransaction> AccountTransactions { get; }
         public DbSet<TransactionEntry> TransactionEntries { get; }
+        public DbSet<MonthlyCategoryBudget> MonthlyCategoryBudgets { get; }
 
         Task<int> SaveChangesAsync();
 

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Teban.Infrastructure.Persistence;
 
@@ -11,9 +12,10 @@ using Teban.Infrastructure.Persistence;
 namespace Teban.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221020020206_Removing_FK_For_CatBudges")]
+    partial class Removing_FK_For_CatBudges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,15 +53,15 @@ namespace Teban.Infrastructure.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "15d239b1-5079-4f48-b2e4-d095f087d193",
-                            ConcurrencyStamp = "f86797a7-4098-4996-bc5d-92dd82fb889b",
+                            Id = "c6c031fb-18df-46be-9bec-1e20600c196f",
+                            ConcurrencyStamp = "4aeece27-4d4a-4f63-9e6a-d3967cc5d602",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "facc3663-8096-42e9-8853-693de015ee74",
-                            ConcurrencyStamp = "713c8f0a-ed96-4a02-91fd-77c48e463acb",
+                            Id = "d0b04032-bdff-4dcc-901f-1f26d5afd03a",
+                            ConcurrencyStamp = "cbb3ae24-2db8-4126-ab32-46bdeb881488",
                             Name = "General",
                             NormalizedName = "GENERAL"
                         });

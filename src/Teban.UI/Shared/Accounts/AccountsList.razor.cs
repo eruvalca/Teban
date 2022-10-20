@@ -14,14 +14,14 @@ namespace Teban.UI.Shared.Accounts
     public partial class AccountsList
     {
         [Parameter]
-        public IEnumerable<Account> Accounts { get; set; }
+        public List<Account> Accounts { get; set; }
         [Parameter]
-        public IEnumerable<AccountTransaction> Transactions { get; set; }
+        public List<AccountTransaction> Transactions { get; set; }
 
         private decimal GetNet()
         {
             return Accounts.Where(a => a.AccountType != AccountType.Category)
-                .Sum(a => a.GetAccountBalance(Transactions.Where(t => t.TransactionEntries.Any(te => te.AccountId == a.AccountId))));
+                .Sum(a => a.GetAccountBalance(Transactions.Where(t => t.TransactionEntries.Any(te => te.AccountId == a.AccountId)).ToList()));
         }
     }
 }

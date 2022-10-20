@@ -18,6 +18,7 @@ namespace Teban.Infrastructure.Persistence
         public DbSet<Account> Accounts => Set<Account>();
         public DbSet<AccountTransaction> AccountTransactions => Set<AccountTransaction>();
         public DbSet<TransactionEntry> TransactionEntries => Set<TransactionEntry>();
+        public DbSet<MonthlyCategoryBudget> MonthlyCategoryBudgets => Set<MonthlyCategoryBudget>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,6 +40,11 @@ namespace Teban.Infrastructure.Persistence
             modelBuilder.Entity<TransactionEntry>(t =>
             {
                 t.Property(t => t.Amount).HasColumnType("money");
+            });
+
+            modelBuilder.Entity<MonthlyCategoryBudget>(m =>
+            {
+                m.Property(m => m.Amount).HasColumnType("money");
             });
 
             modelBuilder.ApplyConfiguration(new RoleConfiguration());

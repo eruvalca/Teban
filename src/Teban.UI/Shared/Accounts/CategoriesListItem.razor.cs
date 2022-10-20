@@ -33,27 +33,31 @@ namespace Teban.UI.Shared.Accounts
 
         protected override void OnParametersSet()
         {
-            RemainingBalance = Account
-                .GetRemainingBalance(Transactions
+            ThisMonthlyCategoryBudget = Account.MonthlyCategoryBudgets
+                .FirstOrDefault(m => m.MonthYear.ToUniversalTime().Month == StartDate.Month
+                    && m.MonthYear.ToUniversalTime().Year == StartDate.Year);
+
+            List<AccountTransaction> relevantTransactions = new();
+
+            if (Transactions.Any(t => t.TransactionEntries.Any(te => te.AccountId == Account.AccountId)))
+            {
+                relevantTransactions = Transactions
                     .Where(t => t.TransactionEntries
                         .Any(te => te.AccountId == Account.AccountId))
-                    .ToList(),
-                    StartDate,
-                    EndDate);
+                    .ToList();
+            }
+
+            RemainingBalance = Account
+            .GetRemainingBalance(relevantTransactions,
+                StartDate,
+                EndDate);
 
             AccountBalance = Account
-                .GetAccountBalance(Transactions
-                    .Where(t => t.TransactionEntries
-                        .Any(te => te.AccountId == Account.AccountId))
-                    .ToList(),
+                .GetAccountBalance(relevantTransactions,
                     StartDate,
                     EndDate);
 
             BudgetedBalance = Account.GetBudgetedBalance(StartDate);
-
-            ThisMonthlyCategoryBudget = Account.MonthlyCategoryBudgets
-                .FirstOrDefault(m => m.MonthYear.ToUniversalTime().Month == StartDate.Month
-                    && m.MonthYear.ToUniversalTime().Year == StartDate.Year);
         }
 
         private async Task HandleMonthlyCategoryBudgetSubmit(MonthlyCategoryBudget monthlyCategoryBudget, int accountId, ChangeEventArgs e)

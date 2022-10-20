@@ -10,20 +10,41 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Category</th>
+                    <th colspan="2">Category</th>
                     <th class="text-end">Available</th>
                 </tr>
             </thead>
             <tbody>
                 <Iterations Items="Accounts.Where(a => a.AccountType == AccountType.Category).OrderBy(a => a.Name)">
                     <CategoriesListItem Account="context" StartDate="StartDate" EndDate="EndDate"
-                        Transactions="Transactions" UserId="UserId"
-                        MonthlyCategoryBudgetSubmitCallback="MonthlyCategoryBudgetSubmit" />
+                                        Transactions="Transactions" UserId="UserId"
+                                        MonthlyCategoryBudgetSubmitCallback="MonthlyCategoryBudgetSubmit" />
                 </Iterations>
                 <tr>
-                    <td><strong>Net</strong></td>
-                    <td class="text-end">
+                    <td colspan="3" class="text-start">
+                        <strong>Totals</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center">
+                        <strong>Net</strong>
+                    </td>
+                    <td class="text-center">
+                        <strong>Budgeted</strong>
+                    </td>
+                    <td class="text-center">
+                        <strong>Remaining</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-center">
                         <strong>@GetNetSpent().ToString("C")</strong>
+                    </td>
+                    <td class="text-center">
+                        <strong>@GetNetBudgeted().ToString("C")</strong>
+                    </td>
+                    <td class="text-center">
+                        <strong>@GetNetRemaining().ToString("C")</strong>
                     </td>
                 </tr>
             </tbody>

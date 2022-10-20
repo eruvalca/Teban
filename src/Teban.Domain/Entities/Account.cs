@@ -36,16 +36,15 @@ namespace Teban.Domain.Entities
 
             var filteredTransactions = transactions
                 .Where(t => t.TransactionDate.Date >= startDate.Date
-                    && t.TransactionDate.Date < endDate.Date);
+                    && t.TransactionDate.Date < endDate.Date
+                    && t.TransactionEntries.Any(te => te.AccountId == AccountId))
+                .ToList();
 
             foreach (var transaction in filteredTransactions)
             {
-                if (transaction.TransactionEntries is not null && transaction.TransactionEntries.Any())
-                {
-                    balance += transaction.TransactionEntries
-                        .Where(t => t.AccountId == AccountId)
-                        .Sum(t => t.Amount);
-                }
+                balance += transaction.TransactionEntries
+                    .Where(t => t.AccountId == AccountId)
+                    .Sum(t => t.Amount);
             }
 
             return balance;
@@ -58,27 +57,27 @@ namespace Teban.Domain.Entities
 
             var filteredTransactions = transactions
                 .Where(t => t.TransactionDate.Date >= startDate.Date
-                    && t.TransactionDate.Date < endDate.Date);
+                    && t.TransactionDate.Date < endDate.Date
+                    && t.TransactionEntries.Any(te => te.AccountId == AccountId))
+                .ToList();
 
             foreach (var transaction in filteredTransactions)
             {
-                if (transaction.TransactionEntries is not null && transaction.TransactionEntries.Any())
-                {
-                    balance += transaction.TransactionEntries
-                        .Where(t => t.AccountId == AccountId)
-                        .Sum(t => t.Amount);
-                }
+                balance += transaction.TransactionEntries
+                    .Where(t => t.AccountId == AccountId)
+                    .Sum(t => t.Amount);
             }
 
             if (MonthlyCategoryBudgets is not null && MonthlyCategoryBudgets.Any())
             {
                 var matchingMonthlyCategoryBudget = MonthlyCategoryBudgets
-                    .Where(m => m.MonthYear.Month == startDate.Month
-                        && m.MonthYear.Year == startDate.Year);
+                    .FirstOrDefault(m => m.MonthYear.Month == startDate.Month
+                        && m.MonthYear.Year == startDate.Year
+                        && m.AccountId == AccountId);
 
                 if (matchingMonthlyCategoryBudget is not null)
                 {
-                    matchingMonthlyCategoryBudgetAmount = matchingMonthlyCategoryBudget.First().Amount;
+                    matchingMonthlyCategoryBudgetAmount = matchingMonthlyCategoryBudget.Amount;
                 }
             }
 
@@ -90,12 +89,13 @@ namespace Teban.Domain.Entities
             if (MonthlyCategoryBudgets is not null && MonthlyCategoryBudgets.Any())
             {
                 var matchingMonthlyCategoryBudget = MonthlyCategoryBudgets
-                    .Where(m => m.MonthYear.Month == startDate.Month
-                        && m.MonthYear.Year == startDate.Year);
+                    .FirstOrDefault(m => m.MonthYear.Month == startDate.Month
+                        && m.MonthYear.Year == startDate.Year
+                        && m.AccountId == AccountId);
 
                 if (matchingMonthlyCategoryBudget is not null)
                 {
-                    return matchingMonthlyCategoryBudget.First().Amount;
+                    return matchingMonthlyCategoryBudget.Amount;
                 }
             }
 

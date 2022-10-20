@@ -37,20 +37,47 @@ namespace Teban.UI.Shared.Accounts
 
         private decimal GetNetSpent()
         {
-            return Accounts.Where(a => a.AccountType == AccountType.Category)
-                .Sum(a => a.GetAccountBalance(Transactions.Where(t => t.TransactionEntries.Any(te => te.AccountId == a.AccountId)).ToList(), StartDate, EndDate));
+            if (Transactions.Any(t => t.TransactionDate.ToUniversalTime().Date >= StartDate.Date
+                && t.TransactionDate.ToUniversalTime().Date < EndDate))
+            {
+                return Accounts.Where(a => a.AccountType == AccountType.Category)
+                    .Sum(a => a.GetAccountBalance(
+                        Transactions.Where(t => t.TransactionEntries.Any(te => te.AccountId == a.AccountId))
+                        .ToList(),
+                        StartDate,
+                        EndDate));
+            }
+
+            return 0M;
         }
 
         private decimal GetNetRemaining()
         {
-            return Accounts.Where(a => a.AccountType == AccountType.Category)
-                .Sum(a => a.GetRemainingBalance(Transactions.Where(t => t.TransactionEntries.Any(te => te.AccountId == a.AccountId)).ToList(), StartDate, EndDate));
+            if (Transactions.Any(t => t.TransactionDate.ToUniversalTime().Date >= StartDate.Date
+                && t.TransactionDate.ToUniversalTime().Date < EndDate))
+            {
+                return Accounts.Where(a => a.AccountType == AccountType.Category)
+                    .Sum(a => a.GetRemainingBalance(
+                        Transactions.Where(t => t.TransactionEntries.Any(te => te.AccountId == a.AccountId))
+                        .ToList(),
+                        StartDate,
+                        EndDate));
+            }
+
+            return 0M;
         }
 
         private decimal GetNetBudgeted()
         {
-            return Accounts.Where(a => a.AccountType == AccountType.Category)
-                .Sum(a => a.GetBudgetedBalance(StartDate));
+            if (Accounts.Any(a => a.MonthlyCategoryBudgets
+                    .Any(m => m.MonthYear.Month == StartDate.Month
+                        && m.MonthYear.Year == StartDate.Year)))
+            {
+                return Accounts.Where(a => a.AccountType == AccountType.Category)
+                    .Sum(a => a.GetBudgetedBalance(StartDate));
+            }
+
+            return 0M;
         }
 
         private async Task MonthlyCategoryBudgetSubmit(MonthlyCategoryBudget monthlyCategoryBudget)

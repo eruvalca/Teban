@@ -1,0 +1,47 @@
+﻿<tr>
+    <td colspan="2">
+        <div class="row">
+            <div class="col-12">
+                <details>
+                    <summary>
+                        <table class="table table-borderless table-responsive-sm mb-0">
+                            <tr>
+                                <td class="text-start">
+                                    @Account.Name
+                                </td>
+                                <td class='text-end'>
+                                    @RemainingBalance.ToString("C")
+                                </td>
+                            </tr>
+                        </table>
+                    </summary>
+                    <div class="row">
+                        <div class="col-4 text-center p-0">
+                            Spent
+                        </div>
+                        <div class="col-4 text-center p-0">
+                            Budgeted
+                        </div>
+                        <div class="col-4 text-center p-0">
+                            Remaining
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4 text-center p-0">
+                            @AccountBalance.ToString("C")
+                        </div>
+                        <div class="col-4 text-center p-0">
+                            <input type="number" min="0" step="0.01" class="form-control form-control-sm"
+                                   value='@BudgetedBalance'
+                                   onclick="this.select()"
+                                   @onchange="((ChangeEventArgs _e) => HandleMonthlyCategoryBudgetSubmit(ThisMonthlyCategoryBudget, Account.AccountId, _e))" />
+                        </div>
+                        <div class="col-4 text-center p-0">
+                            @RemainingBalance.ToString("C")
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </td>
+</tr>

@@ -53,39 +53,29 @@ namespace Teban.UI.Shared.Accounts
                 .Sum(a => a.GetBudgetedBalance(StartDate));
         }
 
-        private async Task HandleMonthlyCategoryBudgetSubmit(MonthlyCategoryBudget monthlyCategoryBudget, int accountId, ChangeEventArgs e)
+        private async Task MonthlyCategoryBudgetSubmit(MonthlyCategoryBudget monthlyCategoryBudget)
         {
-            if (monthlyCategoryBudget is null)
+            if (monthlyCategoryBudget.MonthlyCategoryBudgetId > 0)
             {
-                monthlyCategoryBudget = new MonthlyCategoryBudget
-                {
-                    MonthYear = new DateTime(StartDate.Year, StartDate.Month, 1).ToUniversalTime(),
-                    Amount = decimal.Parse(e.Value.ToString()),
-                    AccountId = accountId,
-                    CreatedBy = UserId
-                };
+                var result = await MonthlyCategoryBudgetsService.PutMonthlyCategoryBudget(monthlyCategoryBudget.MonthlyCategoryBudgetId, monthlyCategoryBudget);
 
+                if (result.Succeeded)
+                {
+                    var accountIndex = Accounts.FindIndex(a => a.AccountId == monthlyCategoryBudget.AccountId);
+                    var monthlyCategoryBudgetIndex = Accounts[accountIndex].MonthlyCategoryBudgets
+                        .FindIndex(m => m.MonthlyCategoryBudgetId == monthlyCategoryBudget.MonthlyCategoryBudgetId);
+                    Accounts[accountIndex].MonthlyCategoryBudgets[monthlyCategoryBudgetIndex] = monthlyCategoryBudget;
+                }
+            }
+            else
+            {
                 var result = await MonthlyCategoryBudgetsService.PostMonthlyCategoryBudget(monthlyCategoryBudget);
 
                 if (result.Succeeded)
                 {
                     monthlyCategoryBudget = result.Data;
-                    Accounts.First(a => a.AccountId == accountId).MonthlyCategoryBudgets.Add(monthlyCategoryBudget);
-                }
-            }
-            else
-            {
-                monthlyCategoryBudget.Amount = decimal.Parse(e.Value.ToString());
-                monthlyCategoryBudget.Modified = DateTime.UtcNow;
-                monthlyCategoryBudget.ModifiedBy = UserId;
-
-                var result = await MonthlyCategoryBudgetsService.PutMonthlyCategoryBudget(monthlyCategoryBudget.MonthlyCategoryBudgetId, monthlyCategoryBudget);
-
-                if (result.Succeeded)
-                {
-                    var accountIndex = Accounts.FindIndex(a => a.AccountId == accountId);
-                    var monthlyCategoryBudgetIndex = Accounts[accountIndex].MonthlyCategoryBudgets.FindIndex(m => m.MonthlyCategoryBudgetId == monthlyCategoryBudget.MonthlyCategoryBudgetId);
-                    Accounts[accountIndex].MonthlyCategoryBudgets[monthlyCategoryBudgetIndex] = monthlyCategoryBudget;
+                    Accounts.First(a => a.AccountId == monthlyCategoryBudget.AccountId)
+                        .MonthlyCategoryBudgets.Add(monthlyCategoryBudget);
                 }
             }
         }

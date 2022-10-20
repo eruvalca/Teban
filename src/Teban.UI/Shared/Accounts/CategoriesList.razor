@@ -16,70 +16,9 @@
             </thead>
             <tbody>
                 <Iterations Items="Accounts.Where(a => a.AccountType == AccountType.Category).OrderBy(a => a.Name)">
-                    <tr>
-                        <td colspan="2">
-                            <div class="row">
-                                <div class="col-12">
-                                    <details>
-                                        <summary>
-                                            <table class="table table-borderless table-responsive-sm mb-0">
-                                                <tr>
-                                                    <td class="text-start">
-                                                        @context.Name
-                                                    </td>
-                                                    <td class='text-end'>
-                                                        @(context.GetRemainingBalance(
-                                                            Transactions.Where(t => t.TransactionEntries.Any(te => te.AccountId == context.AccountId)).ToList(),
-                                                            StartDate,
-                                                            EndDate)
-                                                            .ToString("C"))
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </summary>
-                                        <div class="row">
-                                            <div class="col-4 text-center p-0">
-                                                Spent
-                                            </div>
-                                            <div class="col-4 text-center p-0">
-                                                Budgeted
-                                            </div>
-                                            <div class="col-4 text-center p-0">
-                                                Remaining
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-4 text-center p-0">
-                                                @(context.GetAccountBalance(
-                                                    Transactions.Where(t => t.TransactionEntries.Any(te => te.AccountId == context.AccountId)).ToList(),
-                                                    StartDate,
-                                                    EndDate)
-                                                    .ToString("C"))
-                                            </div>
-                                            <div class="col-4 text-center p-0">
-                                                @{
-                                                    var thisMonthlyCategoryBudget = context.MonthlyCategoryBudgets
-                                                    .FirstOrDefault(m => m.MonthYear.ToUniversalTime().Month == StartDate.Month
-                                                    && m.MonthYear.ToUniversalTime().Year == StartDate.Year);
-                                                }
-                                                <input type="number" min="0" step="0.01" class="form-control form-control-sm"
-                                                       value='@(context.GetBudgetedBalance(StartDate))'
-                                                       onclick="this.select()"
-                                                       @onchange="((ChangeEventArgs _e) => HandleMonthlyCategoryBudgetSubmit(thisMonthlyCategoryBudget, context.AccountId, _e))" />
-                                            </div>
-                                            <div class="col-4 text-center p-0">
-                                                @(context.GetRemainingBalance(
-                                                    Transactions.Where(t => t.TransactionEntries.Any(te => te.AccountId == context.AccountId)).ToList(),
-                                                    StartDate,
-                                                    EndDate)
-                                                    .ToString("C"))
-                                            </div>
-                                        </div>
-                                    </details>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
+                    <CategoriesListItem Account="context" StartDate="StartDate" EndDate="EndDate"
+                        Transactions="Transactions" UserId="UserId"
+                        MonthlyCategoryBudgetSubmitCallback="MonthlyCategoryBudgetSubmit" />
                 </Iterations>
                 <tr>
                     <td><strong>Net</strong></td>

@@ -24,14 +24,20 @@
 
                 <Condition Evaluation="Budget.Accounts is not null && Budget.Accounts.Any()">
                     <Match>
-                        <CategoriesList Accounts="Budget.Accounts" Transactions="Budget.AccountTransactions" MonthYear="SelectedMonthYear" UserId="User.UserId" />
+                        <Condition Evaluation="Budget.Accounts.Any(a => a.AccountType == AccountType.Category)">
+                            <Match>
+                                <CategoriesList Accounts="Budget.Accounts" Transactions="Budget.AccountTransactions"
+                                                MonthYear="SelectedMonthYear" UserId="User.UserId" />
+                            </Match>
+                        </Condition>
                         <AccountsList Accounts="Budget.Accounts" Transactions="Budget.AccountTransactions" />
                     </Match>
 
                     <NotMatch>
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-12 text-center">
                                 <p>You haven't added any accounts.</p>
+                                <a href="/account/new/@BudgetId">Add account</a>
                             </div>
                         </div>
                     </NotMatch>

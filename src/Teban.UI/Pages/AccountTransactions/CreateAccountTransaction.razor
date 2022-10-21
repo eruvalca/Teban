@@ -39,7 +39,7 @@
 
                     <div class="form-group">
                         <label class="form-label">Amount</label>
-                        <InputNumber class="form-control" step="0.01" min="0" @bind-Value="Amount" />
+                        <InputNumber class="form-control" step="0.01" min="0" @bind-Value="Amount" onclick="this.select()" />
                     </div>
 
                     <div class="form-group">
@@ -67,13 +67,17 @@
 
                             <div class="form-group">
                                 <label class="form-label">Category</label>
-                                <InputSelect class="form-control" @bind-Value="CategoryId">
-                                    <option value="">Select a category...</option>
-                                    <Iterations Items="Accounts.Where(a => a.AccountType == AccountType.Category).OrderBy(a => a.Name)"
-                                                Context="category">
-                                        <option value="@category.AccountId">@category.Name</option>
-                                    </Iterations>
-                                </InputSelect>
+                                <Condition Evaluation="Accounts.Where(a => a.AccountType == AccountType.Category).Any()">
+                                    <Match>
+                                        <InputSelect class="form-control" @bind-Value="CategoryId">
+                                            <option value="">Select a category...</option>
+                                            <Iterations Items="Accounts.Where(a => a.AccountType == AccountType.Category).OrderBy(a => a.Name)"
+                                                        Context="category">
+                                                <option value="@category.AccountId">@category.Name</option>
+                                            </Iterations>
+                                        </InputSelect>
+                                    </Match>
+                                </Condition>
 
                                 <div><a href="#" @onclick="() => ShowNewCategoryInput = true" @onclick:preventDefault>New Category</a></div>
 
@@ -153,13 +157,17 @@
 
                                     <div class="form-group">
                                         <label class="form-label">Category</label>
-                                        <InputSelect class="form-control" @bind-Value="CategoryId">
-                                            <option value="">Select a category...</option>
-                                            <Iterations Items="Accounts.Where(a => a.AccountType == AccountType.Category).OrderBy(a => a.Name)"
-                                                        Context="category">
-                                                <option value="@category.AccountId">@category.Name</option>
-                                            </Iterations>
-                                        </InputSelect>
+                                        <Condition Evaluation="Accounts.Where(a => a.AccountType == AccountType.Category).Any()">
+                                            <Match>
+                                                <InputSelect class="form-control" @bind-Value="CategoryId">
+                                                    <option value="">Select a category...</option>
+                                                    <Iterations Items="Accounts.Where(a => a.AccountType == AccountType.Category).OrderBy(a => a.Name)"
+                                                                Context="category">
+                                                        <option value="@category.AccountId">@category.Name</option>
+                                                    </Iterations>
+                                                </InputSelect>
+                                            </Match>
+                                        </Condition>
 
                                         <div><a href="#" @onclick="() => ShowNewCategoryInput = true" @onclick:preventDefault>New Category</a></div>
 

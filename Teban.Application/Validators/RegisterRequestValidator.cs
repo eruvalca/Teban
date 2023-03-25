@@ -17,6 +17,7 @@ public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
             .NotEmpty();
 
         RuleFor(x => x.ConfirmPassword)
-            .Equal(x => x.Password);
+            .Equal(x => x.Password)
+            .WithMessage("'Password' and 'Confirm Password' must match.");
     }
 }

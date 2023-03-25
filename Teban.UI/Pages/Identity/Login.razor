@@ -6,26 +6,26 @@
     </div>
 </div>
 
-@if (ShowError)
-{
-    <div class="row">
-        <div class="col-12">
-            <ul class="error-list">
-                @foreach (var message in ErrorMessages)
-                {
-                    <li class=validation-message>@message</li>
-                }
-            </ul>
-        </div>
-    </div>
-}
-
 <EditForm Model="LoginRequest" OnValidSubmit="HandleSubmit">
     <div class="row">
         <div class="col-12">
             <p>Don't have an account? <a href="/user/register">Register</a> now to get started.</p>
         </div>
     </div>
+
+    @if (ShowError)
+    {
+        <div class="row">
+            <div class="col-12">
+                <ul class="error-list">
+                    @foreach (var message in ErrorMessages)
+                    {
+                        <li class=validation-message>@message</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
 
     <div class="row">
         <div class="col-12">

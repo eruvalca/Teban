@@ -2,6 +2,7 @@
 using Refit;
 using System.Text.Json;
 using Teban.Contracts.Requests.V1.Identity;
+using Teban.Contracts.Responses.V1;
 using Teban.Contracts.Responses.V1.Identity;
 using Teban.UI.Services;
 
@@ -56,7 +57,24 @@ public partial class Register
                 {
                     PropertyNameCaseInsensitive = true
                 })!;
-                ErrorMessages = new List<string> { response.ErrorMessage };
+
+                if (!string.IsNullOrEmpty(response.ErrorMessage))
+                {
+                    ErrorMessages = new List<string> { response.ErrorMessage };
+                }
+                else
+                {
+                    ValidationFailureResponse validationFailureResponse = JsonSerializer.Deserialize<ValidationFailureResponse>(exception.Content!, new JsonSerializerOptions()
+                    {
+                        PropertyNameCaseInsensitive = true
+                    })!;
+
+                    ErrorMessages = validationFailureResponse is not null && validationFailureResponse.Errors.Any()
+                        ? validationFailureResponse.Errors
+                            .Select(x => x.Message)
+                            .ToList()
+                        : new List<string> { "Something went wrong. Please try again later." };
+                }
             }
             catch (Exception)
             {

@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Teban.Api.Mapping;
 using Teban.Application.Identity;
@@ -12,10 +13,12 @@ namespace Teban.Api.Controllers.V1;
 public class IdentityController : ControllerBase
 {
     private readonly IIdentityService _identityService;
+    private readonly IValidator<RegisterRequest> _registerValidator;
 
-    public IdentityController(IIdentityService identityService)
+    public IdentityController(IIdentityService identityService, IValidator<RegisterRequest> registerValidator)
     {
         _identityService = identityService;
+        _registerValidator = registerValidator;
     }
 
     [HttpPost(ApiEndpoints.Identity.Register)]
@@ -23,6 +26,7 @@ public class IdentityController : ControllerBase
     [ProducesResponseType(typeof(RegisterResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest registerRequest)
     {
+        await _registerValidator.ValidateAndThrowAsync(registerRequest);
         var tebanUser = registerRequest.MapToTebanUser();
         (bool success, string idOrError) = await _identityService.RegisterUserAsync(tebanUser, registerRequest.Password);
 

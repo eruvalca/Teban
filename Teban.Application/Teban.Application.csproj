@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Teban.Contracts\Teban.Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistence\Migrations\" />
+  </ItemGroup>
+
 </Project>

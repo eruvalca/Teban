@@ -12,9 +12,8 @@ public class Contact : BaseAuditableEntity
     public string PhotoUrl { get; set; } = string.Empty;
     public DateTime? DateOfBirth { get; set; }
 
-    public required string TebanUserId { get; set; }
+    public string TebanUserId { get; set; }
     public TebanUser TebanUser { get; set; }
 
-    public int CommunicationScheduleId { get; set; }
     public CommunicationSchedule? CommunicationSchedule { get; set; }
 }

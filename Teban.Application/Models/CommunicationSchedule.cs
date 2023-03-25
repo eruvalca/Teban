@@ -8,7 +8,7 @@ public class CommunicationSchedule : BaseAuditableEntity
     public required Frequency Frequency { get; set; }
     public required DateTime StartDate { get; set; }
 
-    public required string TebanUserId { get; set; }
+    public string TebanUserId { get; set; }
     public TebanUser TebanUser { get; set; }
 
     public int ContactId { get; set; }

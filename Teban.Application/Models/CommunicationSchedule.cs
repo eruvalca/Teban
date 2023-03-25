@@ -9,8 +9,8 @@ public class CommunicationSchedule : BaseAuditableEntity
     public required DateTime StartDate { get; set; }
 
     public required string TebanUserId { get; set; }
-    public required TebanUser TebanUser { get; set; }
+    public TebanUser TebanUser { get; set; }
 
     public int ContactId { get; set; }
-    public required Contact Contact { get; set; }
+    public Contact Contact { get; set; }
 }

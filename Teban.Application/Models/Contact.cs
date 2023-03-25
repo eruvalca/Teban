@@ -13,7 +13,7 @@ public class Contact : BaseAuditableEntity
     public DateTime? DateOfBirth { get; set; }
 
     public required string TebanUserId { get; set; }
-    public required TebanUser TebanUser { get; set; }
+    public TebanUser TebanUser { get; set; }
 
     public int CommunicationScheduleId { get; set; }
     public CommunicationSchedule? CommunicationSchedule { get; set; }

@@ -7,5 +7,4 @@ public class TebanUser : IdentityUser
     public required string LastName { get; set; }
 
     public ICollection<Contact>? Contacts { get; set; }
-    public ICollection<CommunicationSchedule>? CommunicationSchedules { get; set; }
 }

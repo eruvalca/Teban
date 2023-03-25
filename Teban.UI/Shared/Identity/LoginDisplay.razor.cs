@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
+using Teban.UI.Services;
 
 namespace Teban.UI.Shared.Identity;
 public partial class LoginDisplay
@@ -10,6 +11,8 @@ public partial class LoginDisplay
 
     [Inject]
     private NavigationManager Navigation { get; set; }
+    [Inject]
+    private IIdentityService IdentityService { get; set; }
 
     private bool IsAuthenticated { get; set; }
 
@@ -23,6 +26,7 @@ public partial class LoginDisplay
 
     private async Task BeginSignOut(MouseEventArgs args)
     {
+        await IdentityService.Logout();
         Navigation.NavigateTo("/");
     }
 }

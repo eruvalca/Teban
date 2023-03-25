@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Teban.Api.Sdk\Teban.Api.Sdk.csproj" />
     <ProjectReference Include="..\Teban.UI\Teban.UI.csproj" />
   </ItemGroup>
 

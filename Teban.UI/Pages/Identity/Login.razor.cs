@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Refit;
+using System.Text.Json;
 using Teban.Contracts.Requests.V1.Identity;
+using Teban.Contracts.Responses.V1.Identity;
 using Teban.UI.Services;
 
 namespace Teban.UI.Pages.Identity;
@@ -25,15 +28,38 @@ public partial class Login
         DisableSubmit = true;
         ShowError = false;
 
-        var response = await IdentityService.Login(LoginRequest);
+        LoginResponse response;
 
-        if (response.Success)
+        try
         {
-            Navigation.NavigateTo("/");
+            response = await IdentityService.Login(LoginRequest);
+
+            if (response.Success)
+            {
+                Navigation.NavigateTo("/");
+            }
+            else
+            {
+                ErrorMessages = new List<string> { response.ErrorMessage };
+                ShowError = true;
+                DisableSubmit = false;
+            }
         }
-        else
+        catch (ApiException exception)
         {
-            ErrorMessages = new List<string> { response.ErrorMessage };
+            try
+            {
+                response = JsonSerializer.Deserialize<LoginResponse>(exception.Content!, new JsonSerializerOptions()
+                {
+                    PropertyNameCaseInsensitive = true
+                })!;
+                ErrorMessages = new List<string> { response.ErrorMessage };
+            }
+            catch (Exception)
+            {
+                ErrorMessages = new List<string> { exception.Message };
+            }
+
             ShowError = true;
             DisableSubmit = false;
         }

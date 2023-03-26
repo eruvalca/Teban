@@ -21,26 +21,24 @@ string tebanApiBaseAddress = builder.HostEnvironment.IsDevelopment()
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<ILocalSecureStorage, BrowserLocalSecureStorage>();
 
-builder.Services.AddHttpClient()
+builder.Services.AddScoped<ApiHeadersHandler>();
+
+builder.Services
     .AddRefitClient<IIdentityApi>()
     .ConfigureHttpClient(x =>
         x.BaseAddress = new Uri(tebanApiBaseAddress));
 
-builder.Services.AddHttpClient()
-    .AddRefitClient<IContactsApi>(s => new RefitSettings
-    {
-        AuthorizationHeaderValueGetter = async () => await s.GetRequiredService<ILocalSecureStorage>().GetAsync("authToken")
-    }).ConfigureHttpClient(x =>
-        x.BaseAddress = new Uri(tebanApiBaseAddress));
+builder.Services
+    .AddRefitClient<IContactsApi>()
+    .ConfigureHttpClient(x =>
+        x.BaseAddress = new Uri(tebanApiBaseAddress))
+    .AddHttpMessageHandler<ApiHeadersHandler>();
 
-builder.Services.AddHttpClient()
-    .AddRefitClient<ICommunicationSchedulesApi>(s => new RefitSettings
-    {
-        AuthorizationHeaderValueGetter = async () => await s.GetRequiredService<ILocalSecureStorage>().GetAsync("authToken")
-    }).ConfigureHttpClient(x =>
-        x.BaseAddress = new Uri(tebanApiBaseAddress));
-
-builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services
+    .AddRefitClient<ICommunicationSchedulesApi>()
+    .ConfigureHttpClient(x =>
+        x.BaseAddress = new Uri(tebanApiBaseAddress))
+    .AddHttpMessageHandler<ApiHeadersHandler>();
 
 builder.Services.AddAuthorizationCore();
 

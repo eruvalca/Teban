@@ -10,4 +10,6 @@ public interface IIdentityService
     Task<LoginResponse> Login(LoginRequest request);
 
     Task Logout();
+
+    Task<string> GetUserId();
 }

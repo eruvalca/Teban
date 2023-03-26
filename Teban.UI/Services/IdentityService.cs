@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
+using System.Security.Claims;
 using Teban.Api.Sdk;
 using Teban.Contracts.Requests.V1.Identity;
 using Teban.Contracts.Responses.V1.Identity;
@@ -59,5 +60,12 @@ public class IdentityService : IIdentityService
     {
         await _localStorage.RemoveAsync("authToken");
         ((TokenAuthenticationStateProvider)_authStateProvider).NotifyUserLogout();
+    }
+
+    public async Task<string> GetUserId()
+    {
+        var token = await _localStorage.GetAsync("authToken");
+        var claims = JwtParser.ParseClaimsFromJwt(token);
+        return claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)!.Value;
     }
 }

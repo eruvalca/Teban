@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Teban.Api.Sdk\Teban.Api.Sdk.csproj" />
+    <ProjectReference Include="..\Teban.Contracts\Teban.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

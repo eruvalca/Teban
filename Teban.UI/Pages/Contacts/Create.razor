@@ -1,0 +1,78 @@
+@page "/contact/create"
+
+<div class="row">
+    <div class="col-12">
+        <h3>New Contact</h3>
+    </div>
+</div>
+
+@if (ShowError)
+{
+    <div class="row">
+        <div class="col-12">
+            <ul class="error-list">
+                @foreach (var message in ErrorMessages)
+                {
+                    <li class=validation-message>@message</li>
+                }
+            </ul>
+        </div>
+    </div>
+}
+
+<EditForm Model="CreateRequest" OnValidSubmit="HandleSubmit">
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <label class="form-label">First Name</label>
+                <InputText class="form-control" @bind-Value="CreateRequest.FirstName" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Middle Name</label>
+                <InputText class="form-control" @bind-Value="CreateRequest.MiddleName" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Last Name</label>
+                <InputText class="form-control" @bind-Value="CreateRequest.LastName" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Phone #</label>
+                <InputText class="form-control" @bind-Value="CreateRequest.Phone" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <InputText class="form-control" @bind-Value="CreateRequest.Email" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Photo</label>
+                <InputText class="form-control" @bind-Value="CreateRequest.PhotoUrl" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Birthday</label>
+                <InputDate class="form-control" @bind-Value="CreateRequest.DateOfBirth" />
+            </div>
+
+            <div class="form-group text-end">
+                <button type="reset" class="btn btn-secondary" @onclick='() => Navigation.NavigateTo("/")'>Cancel</button>
+
+                @if (DisableSubmit)
+                {
+                    <button type="button" class="btn btn-success ms-1" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Registering...
+                    </button>
+                }
+                else
+                {
+                    <button type="submit" class="btn btn-success ms-1">Register</button>
+                }
+            </div>
+        </div>
+    </div>
+</EditForm>

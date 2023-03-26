@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text.Json;
 using Teban.Api.Sdk;
 using Teban.Contracts.Requests.V1.Identity;
+using Teban.Contracts.Responses.V1;
 using Teban.Contracts.Responses.V1.Identity;
 using Teban.UI.Common;
 using Teban.UI.Common.Providers;
@@ -25,7 +26,40 @@ public class IdentityService : IIdentityService
 
     public async Task<RegisterResponse> Register(RegisterRequest request)
     {
-        var response = await _identityApi.RegisterAsync(request);
+        RegisterResponse response;
+
+        try
+        {
+            response = await _identityApi.RegisterAsync(request);
+        }
+        catch (ApiException apiException)
+        {
+            response = JsonSerializer.Deserialize<RegisterResponse>(apiException.Content!, new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true
+            })!;
+
+            if (string.IsNullOrEmpty(response.ErrorMessage))
+            {
+                var validationResponse = JsonSerializer.Deserialize<ValidationFailureResponse>(apiException.Content!, new JsonSerializerOptions()
+                {
+                    PropertyNameCaseInsensitive = true
+                })!;
+
+                if (validationResponse.Errors.Any())
+                {
+                    throw new ValidationFailureException(validationResponse);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            response = new RegisterResponse
+            {
+                Success = false,
+                ErrorMessage = ex.Message
+            };
+        }
 
         return response is not null
             ? response

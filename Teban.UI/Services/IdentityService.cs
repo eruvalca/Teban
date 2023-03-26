@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
+using Refit;
 using System.Security.Claims;
+using System.Text.Json;
 using Teban.Api.Sdk;
 using Teban.Contracts.Requests.V1.Identity;
 using Teban.Contracts.Responses.V1.Identity;
@@ -36,7 +38,27 @@ public class IdentityService : IIdentityService
 
     public async Task<LoginResponse> Login(LoginRequest request)
     {
-        var response = await _identityApi.LoginAsync(request);
+        LoginResponse response;
+
+        try
+        {
+            response = await _identityApi.LoginAsync(request);
+        }
+        catch (ApiException apiException)
+        {
+            response = JsonSerializer.Deserialize<LoginResponse>(apiException.Content!, new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true
+            })!;
+        }
+        catch (Exception ex)
+        {
+            response = new LoginResponse
+            {
+                Success = false,
+                ErrorMessage = ex.Message
+            };
+        }
 
         if (response is not null)
         {
@@ -45,11 +67,9 @@ public class IdentityService : IIdentityService
                 await _localStorage.SetAsync("authToken", response.Token);
                 ((TokenAuthenticationStateProvider)_authStateProvider).NotifyUserAuthentication(response.Token);
             }
-
-            return response;
         }
 
-        return new LoginResponse
+        return response ?? new LoginResponse
         {
             Success = false,
             ErrorMessage = "Something went wrong. Please try again later."

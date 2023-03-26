@@ -28,15 +28,24 @@ public partial class Login
 
         LoginResponse response;
 
-        response = await IdentityService.Login(LoginRequest);
+        try
+        {
+            response = await IdentityService.Login(LoginRequest);
 
-        if (response.Success)
-        {
-            Navigation.NavigateTo("/");
+            if (response.Success)
+            {
+                Navigation.NavigateTo("/");
+            }
+            else
+            {
+                ErrorMessages = new List<string> { response.ErrorMessage };
+                ShowError = true;
+                DisableSubmit = false;
+            }
         }
-        else
+        catch (Exception exception)
         {
-            ErrorMessages = new List<string> { response.ErrorMessage };
+            ErrorMessages = new List<string> { exception.Message };
             ShowError = true;
             DisableSubmit = false;
         }

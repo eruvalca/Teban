@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Refit;
-using System.Text.Json;
 using Teban.Api.Sdk;
 using Teban.Contracts.Requests.V1.Contacts;
-using Teban.Contracts.Responses.V1;
 using Teban.Contracts.Responses.V1.Contacts;
 using Teban.UI.Services;
 
@@ -11,7 +8,7 @@ namespace Teban.UI.Pages.Contacts;
 public partial class Create
 {
     [Inject]
-    private IContactsApi ContactsApi { get; set; }
+    private IContactsApiService ContactsApiService { get; set; }
     [Inject]
     private IIdentityService IdentityService { get; set; }
     [Inject]
@@ -36,33 +33,26 @@ public partial class Create
         DisableSubmit = true;
         ShowError = false;
 
-        ContactResponse response;
+        ContactResponse? response;
 
         try
         {
-            response = await ContactsApi.CreateContactAsync(CreateRequest);
+            response = await ContactsApiService.CreateContactAsync(CreateRequest);
             Navigation.NavigateTo("/");
         }
-        catch (ApiException exception)
+        catch (ValidationFailureException validationException)
         {
-            try
-            {
-                ValidationFailureResponse validationFailureResponse = JsonSerializer.Deserialize<ValidationFailureResponse>(exception.Content!, new JsonSerializerOptions()
-                {
-                    PropertyNameCaseInsensitive = true
-                })!;
+            ErrorMessages = validationException.ValidationResponse
+                .Errors
+                .Select(x => x.Message)
+                .ToList();
 
-                ErrorMessages = validationFailureResponse is not null && validationFailureResponse.Errors.Any()
-                    ? validationFailureResponse.Errors
-                        .Select(x => x.Message)
-                        .ToList()
-                    : new List<string> { "Something went wrong. Please try again later." };
-            }
-            catch (Exception)
-            {
-                ErrorMessages = new List<string> { exception.Message };
-            }
-
+            ShowError = true;
+            DisableSubmit = false;
+        }
+        catch (Exception exception)
+        {
+            ErrorMessages = new List<string> { exception.Message };
             ShowError = true;
             DisableSubmit = false;
         }

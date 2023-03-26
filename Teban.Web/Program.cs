@@ -44,5 +44,6 @@ builder.Services.AddAuthorizationCore();
 
 builder.Services.AddScoped<AuthenticationStateProvider, TokenAuthenticationStateProvider>();
 builder.Services.AddScoped<IIdentityService, IdentityService>();
+builder.Services.AddScoped<IContactsApiService, ContactsApiService>();
 
 await builder.Build().RunAsync();

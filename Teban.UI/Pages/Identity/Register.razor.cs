@@ -57,5 +57,11 @@ public partial class Register
             ShowError = true;
             DisableSubmit = false;
         }
+        catch (Exception exception)
+        {
+            ErrorMessages = new List<string> { exception.Message };
+            ShowError = true;
+            DisableSubmit = false;
+        }
     }
 }

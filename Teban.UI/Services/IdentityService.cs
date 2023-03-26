@@ -51,6 +51,8 @@ public class IdentityService : IIdentityService
                     throw new ValidationFailureException(validationResponse);
                 }
             }
+
+            throw;
         }
         catch (Exception ex)
         {
@@ -84,6 +86,11 @@ public class IdentityService : IIdentityService
             {
                 PropertyNameCaseInsensitive = true
             })!;
+
+            if (string.IsNullOrEmpty(response.ErrorMessage))
+            {
+                throw;
+            }
         }
         catch (Exception ex)
         {

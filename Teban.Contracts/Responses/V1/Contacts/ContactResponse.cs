@@ -1,6 +1,4 @@
-﻿using Teban.Contracts.Enums;
-
-namespace Teban.Contracts.Responses.V1.Contacts;
+﻿namespace Teban.Contracts.Responses.V1.Contacts;
 public class ContactResponse
 {
     public int ContactId { get; set; }
@@ -13,6 +11,6 @@ public class ContactResponse
     public DateTime? DateOfBirth { get; set; }
 
     public string TebanUserId { get; set; } = string.Empty;
-    public Frequency? Frequency { get; set; }
+    public string? Frequency { get; set; }
     public DateTime? StartDate { get; set; }
 }

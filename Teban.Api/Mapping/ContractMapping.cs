@@ -1,5 +1,4 @@
 ﻿using Teban.Application.Models;
-using Teban.Contracts.Enums;
 using Teban.Contracts.Requests.V1.CommunicationSchedules;
 using Teban.Contracts.Requests.V1.Contacts;
 using Teban.Contracts.Requests.V1.Identity;
@@ -37,7 +36,7 @@ public static class ContractMapping
             createContactRequest.Frequency is not null && createContactRequest.StartDate is not null
             ? new CommunicationSchedule
             {
-                Frequency = (Frequency)createContactRequest.Frequency,
+                Frequency = createContactRequest.Frequency,
                 StartDate = (DateTime)createContactRequest.StartDate,
                 TebanUserId = createContactRequest.TebanUserId
             }
@@ -88,7 +87,7 @@ public static class ContractMapping
             updateContactRequest.Frequency is not null && updateContactRequest.StartDate is not null
             ? new CommunicationSchedule
             {
-                Frequency = (Frequency)updateContactRequest.Frequency,
+                Frequency = updateContactRequest.Frequency,
                 StartDate = (DateTime)updateContactRequest.StartDate,
                 TebanUserId = updateContactRequest.TebanUserId,
                 ContactId = id

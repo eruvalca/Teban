@@ -1,6 +1,4 @@
-﻿using Teban.Contracts.Enums;
-
-namespace Teban.Contracts.Requests.V1.Contacts;
+﻿namespace Teban.Contracts.Requests.V1.Contacts;
 public class UpdateContactRequest
 {
     public required string FirstName { get; set; }
@@ -12,6 +10,6 @@ public class UpdateContactRequest
     public DateTime? DateOfBirth { get; set; }
 
     public string TebanUserId { get; set; } = string.Empty;
-    public Frequency? Frequency { get; set; }
+    public string? Frequency { get; set; }
     public DateTime? StartDate { get; set; }
 }

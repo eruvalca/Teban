@@ -21,24 +21,7 @@ public class ContactService : IContactService
     {
         await _contactValidator.ValidateAndThrowAsync(contact, cancellationToken: cToken);
         _context.Contacts.Add(contact);
-        var createResult = await _context.SaveChangesAsync(cToken);
-
-        if (createResult <= 0)
-        {
-            return false;
-        }
-
-        if (contact.CommunicationSchedule is not null)
-        {
-            contact.CommunicationSchedule.TebanUserId = contact.TebanUserId;
-            contact.CommunicationSchedule.ContactId = contact.CommunicationSchedule.ContactId;
-            await _communicationScheduleValidator.ValidateAndThrowAsync(contact.CommunicationSchedule, cToken);
-            _context.CommunicationSchedules.Add(contact.CommunicationSchedule);
-
-            createResult = await _context.SaveChangesAsync(cToken);
-        }
-
-        return createResult > 0;
+        return await _context.SaveChangesAsync(cToken) > 0;
     }
 
     public async Task<Contact?> GetByIdAsync(int id, string userId, CancellationToken cToken = default)
@@ -69,18 +52,12 @@ public class ContactService : IContactService
             return null;
         }
 
-        if (contact.CommunicationSchedule is not null)
+        if (existingContact.CommunicationSchedule is not null && contact.CommunicationSchedule is not null)
         {
             await _communicationScheduleValidator.ValidateAndThrowAsync(contact.CommunicationSchedule, cToken);
-            var existingCommunicationSchedules = _context.CommunicationSchedules
-                .Where(x => x.ContactId == contact.ContactId);
-
-            if (await existingCommunicationSchedules.AnyAsync(cancellationToken: cToken))
-            {
-                _context.CommunicationSchedules.RemoveRange(existingCommunicationSchedules);
-            }
-
-            _context.CommunicationSchedules.Add(contact.CommunicationSchedule);
+            existingContact.CommunicationSchedule.Frequency = contact.CommunicationSchedule.Frequency;
+            existingContact.CommunicationSchedule.StartDate = contact.CommunicationSchedule.StartDate;
+            _context.CommunicationSchedules.Entry(existingContact.CommunicationSchedule).State = EntityState.Modified;
         }
 
         existingContact.FirstName = contact.FirstName;
@@ -106,14 +83,6 @@ public class ContactService : IContactService
         if (existingContact is null)
         {
             return false;
-        }
-
-        var contactCommunicationSchedules = _context.CommunicationSchedules
-                .Where(x => x.ContactId == id);
-
-        if (await contactCommunicationSchedules.AnyAsync(cancellationToken: cToken))
-        {
-            _context.CommunicationSchedules.RemoveRange(contactCommunicationSchedules);
         }
 
         _context.Contacts.Remove(existingContact);

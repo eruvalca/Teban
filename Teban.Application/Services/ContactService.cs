@@ -45,7 +45,8 @@ public class ContactService : IContactService
     {
         await _contactValidator.ValidateAndThrowAsync(contact, cancellationToken: cToken);
         var existingContact = await _context.Contacts
-            .FindAsync(new object[] { contact.ContactId }, cancellationToken: cToken);
+            .Include(x => x.CommunicationSchedule)
+            .FirstOrDefaultAsync(x => x.ContactId == contact.ContactId, cancellationToken: cToken);
 
         if (existingContact is null)
         {

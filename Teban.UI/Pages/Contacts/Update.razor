@@ -1,0 +1,131 @@
+@page "/contact/update/{Id:int}"
+
+<div class="row">
+    <div class="col-12">
+        <h3>Update Contact</h3>
+    </div>
+</div>
+
+@if (ShowError)
+{
+    <div class="row">
+        <div class="col-12">
+            <ul class="error-list">
+                @foreach (var message in ErrorMessages)
+                {
+                    <li class=validation-message>@message</li>
+                }
+            </ul>
+        </div>
+    </div>
+}
+
+@if (UpdateRequest is not null)
+{
+    <EditForm Model="UpdateRequest" OnValidSubmit="HandleSubmit">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="form-label">First Name</label>
+                    <InputText class="form-control" @bind-Value="UpdateRequest.FirstName" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Middle Name</label>
+                    <InputText class="form-control" @bind-Value="UpdateRequest.MiddleName" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Last Name</label>
+                    <InputText class="form-control" @bind-Value="UpdateRequest.LastName" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Phone #</label>
+                    <InputText class="form-control" @bind-Value="UpdateRequest.Phone" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <InputText class="form-control" @bind-Value="UpdateRequest.Email" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Photo</label>
+                    <InputText class="form-control" @bind-Value="UpdateRequest.PhotoUrl" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Birthday</label>
+                    <InputDate class="form-control" @bind-Value="UpdateRequest.DateOfBirth" />
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                Communication Schedule <small class="text-muted">Optional</small>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class="form-label">How frequently would you like to keep in touch?</label>
+                                    <InputSelect class="form-control" @bind-Value="UpdateRequest.Frequency">
+                                        <option value="@Frequency.Daily">Daily</option>
+                                        <option value="@Frequency.Weekly">Weekly</option>
+                                        <option value="@Frequency.BiWeekly">Every 2 Weeks</option>
+                                        <option value="@Frequency.Monthly">Monthly</option>
+                                        <option value="@Frequency.BiMonthly">Every 2 Months</option>
+                                        <option value="@Frequency.Quarterly">Every 3 Months</option>
+                                        <option value="@Frequency.BiAnnually">Every 6 Months</option>
+                                        <option value="@Frequency.Annually">Annually</option>
+                                    </InputSelect>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label">Start Date</label>
+                                    <InputDate class="form-control" @bind-Value="UpdateRequest.StartDate" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group text-end">
+                    <button type="reset" class="btn btn-secondary" @onclick='() => Navigation.NavigateTo("/")'>Cancel</button>
+
+                    @if (DisableDelete)
+                    {
+                        <button type="button" class="btn btn-danger ms-1" disabled>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Deleting...
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-danger ms-1" @onclick="HandleDelete">Delete</button>
+                    }
+
+                    @if (DisableSubmit)
+                    {
+                        <button type="button" class="btn btn-success ms-1" disabled>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Submitting...
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-success ms-1">Submit</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </EditForm>
+}
+else
+{
+    <div class="row">
+        <div class="col-12 text-center">
+            <LoadingSpinner />
+        </div>
+    </div>
+}

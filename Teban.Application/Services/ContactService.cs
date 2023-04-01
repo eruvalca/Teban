@@ -53,12 +53,27 @@ public class ContactService : IContactService
             return null;
         }
 
-        if (existingContact.CommunicationSchedule is not null && contact.CommunicationSchedule is not null)
+        if (contact.CommunicationSchedule is not null)
         {
-            await _communicationScheduleValidator.ValidateAndThrowAsync(contact.CommunicationSchedule, cToken);
-            existingContact.CommunicationSchedule.Frequency = contact.CommunicationSchedule.Frequency;
-            existingContact.CommunicationSchedule.StartDate = contact.CommunicationSchedule.StartDate;
-            _context.CommunicationSchedules.Entry(existingContact.CommunicationSchedule).State = EntityState.Modified;
+            if (existingContact.CommunicationSchedule is not null)
+            {
+                await _communicationScheduleValidator.ValidateAndThrowAsync(contact.CommunicationSchedule, cToken);
+                existingContact.CommunicationSchedule.Frequency = contact.CommunicationSchedule.Frequency;
+                existingContact.CommunicationSchedule.StartDate = contact.CommunicationSchedule.StartDate;
+                _context.CommunicationSchedules.Entry(existingContact.CommunicationSchedule).State = EntityState.Modified;
+            }
+            else
+            {
+                var newCommunicationSchedule = new CommunicationSchedule
+                {
+                    Frequency = contact.CommunicationSchedule.Frequency,
+                    StartDate = contact.CommunicationSchedule.StartDate,
+                    ContactId = existingContact.ContactId,
+                    TebanUserId = contact.TebanUserId
+                };
+                _context.CommunicationSchedules.Add(newCommunicationSchedule);
+                existingContact.CommunicationSchedule = newCommunicationSchedule;
+            }
         }
 
         existingContact.FirstName = contact.FirstName;

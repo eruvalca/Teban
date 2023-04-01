@@ -18,8 +18,7 @@ public partial class Create
     {
         FirstName = string.Empty,
         MiddleName = string.Empty,
-        LastName = string.Empty,
-        DateOfBirth = DateTime.Today
+        LastName = string.Empty
     };
 
     private List<string> ErrorMessages { get; set; } = new List<string>();

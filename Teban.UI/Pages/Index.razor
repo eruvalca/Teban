@@ -5,9 +5,9 @@
 <AuthorizeView>
     <Authorized>
         <h1>Today <small class="text-muted">@Today.ToLongDateString()</small></h1>
+        <h3>Birthdays</h3>
         @if (BirthDayContacts != null)
         {
-            <h3>Birthdays</h3>
             <ul>
                 @foreach (var bDayContact in BirthDayContacts)
                 {
@@ -17,14 +17,12 @@
         }
         else
         {
-            <div class="text-center">
-                <LoadingSpinner />
-            </div>
+            <LoadingSpinner />
         }
 
+        <h3>Scheduled</h3>
         @if (ScheduledContacts != null)
         {
-            <h3>Scheduled</h3>
             <ul>
                 @foreach (var scheduledContact in ScheduledContacts)
                 {
@@ -34,9 +32,7 @@
         }
         else
         {
-            <div class="text-center">
-                <LoadingSpinner />
-            </div>
+            <LoadingSpinner />
         }
     </Authorized>
     <NotAuthorized>

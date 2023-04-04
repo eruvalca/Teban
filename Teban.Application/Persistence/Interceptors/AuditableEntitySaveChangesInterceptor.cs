@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Teban.Application.Common;
 using Teban.Application.Identity;
 using Teban.Application.Models;
-using Teban.Application.Persistence.Interceptors;
 
 namespace Teban.Application.Persistence.Interceptors;
 
@@ -40,12 +39,12 @@ public class AuditableEntitySaveChangesInterceptor : SaveChangesInterceptor
         {
             if (entry.Entity is Contact contact)
             {
-                contact.DateOfBirth = contact.DateOfBirth?.ToUniversalTime().Date.ToUniversalTime();
+                contact.DateOfBirth = contact.DateOfBirth?.Date;
             }
 
             if (entry.Entity is CommunicationSchedule schedule)
             {
-                schedule.StartDate = schedule.StartDate.ToUniversalTime().Date.ToUniversalTime();
+                schedule.StartDate = schedule.StartDate.Date;
             }
 
             if (entry.State == EntityState.Added)

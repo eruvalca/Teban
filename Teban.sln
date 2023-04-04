@@ -9,11 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teban.Application", "Teban.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teban.Contracts", "Teban.Contracts\Teban.Contracts.csproj", "{F07B8B23-7A58-44D3-B566-5D54DC85602C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teban.Api.Sdk", "Teban.Api.Sdk\Teban.Api.Sdk.csproj", "{4FE7F7A1-E4A6-45B6-A0E8-E28CC72F2D6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teban.Api.Sdk", "Teban.Api.Sdk\Teban.Api.Sdk.csproj", "{4FE7F7A1-E4A6-45B6-A0E8-E28CC72F2D6B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teban.UI", "Teban.UI\Teban.UI.csproj", "{59B84D3B-E0F0-411E-9A55-2F7B5B53B6E5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teban.Web", "Teban.Web\Teban.Web.csproj", "{FD68F7D9-76C8-4A25-A195-662324BAE038}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teban.Contracts.Tests.Unit", "Teban.Contracts.Tests.Unit\Teban.Contracts.Tests.Unit.csproj", "{3604B9B3-069E-4B01-BDA4-C71A64136A6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{FD68F7D9-76C8-4A25-A195-662324BAE038}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD68F7D9-76C8-4A25-A195-662324BAE038}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD68F7D9-76C8-4A25-A195-662324BAE038}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3604B9B3-069E-4B01-BDA4-C71A64136A6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3604B9B3-069E-4B01-BDA4-C71A64136A6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3604B9B3-069E-4B01-BDA4-C71A64136A6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3604B9B3-069E-4B01-BDA4-C71A64136A6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

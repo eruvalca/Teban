@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Teban.Api.Sdk;
-using Teban.Contracts.ContractMapping;
+using Teban.Contracts.ContractMapping.V1;
 using Teban.Contracts.Requests.V1.Contacts;
 using Teban.Contracts.Responses.V1.Contacts;
 using Teban.UI.Services;

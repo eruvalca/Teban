@@ -10,8 +10,7 @@ public class CommunicationScheduleValidator : AbstractValidator<CommunicationSch
             .NotNull();
 
         RuleFor(x => x.StartDate)
-            .NotNull()
-            .GreaterThanOrEqualTo(DateTime.Today);
+            .NotNull();
 
         RuleFor(x => x.TebanUserId)
             .NotEmpty();

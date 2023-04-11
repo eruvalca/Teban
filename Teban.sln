@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teban.UI", "Teban.UI\Teban.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teban.Web", "Teban.Web\Teban.Web.csproj", "{FD68F7D9-76C8-4A25-A195-662324BAE038}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teban.Contracts.Tests.Unit", "Teban.Contracts.Tests.Unit\Teban.Contracts.Tests.Unit.csproj", "{3604B9B3-069E-4B01-BDA4-C71A64136A6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Teban.Contracts.Tests.Unit", "Teban.Contracts.Tests.Unit\Teban.Contracts.Tests.Unit.csproj", "{3604B9B3-069E-4B01-BDA4-C71A64136A6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

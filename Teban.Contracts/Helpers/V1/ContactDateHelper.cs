@@ -170,4 +170,14 @@ public static class ContactDateHelper
             }
         }
     }
+
+    public static DateTime GetNextScheduledDate(string frequency, DateTime startDate, DateTime dateToCheck)
+    {
+        while (!IsNextDate(frequency, startDate, dateToCheck))
+        {
+            dateToCheck = dateToCheck.AddDays(1);
+        }
+
+        return dateToCheck;
+    }
 }

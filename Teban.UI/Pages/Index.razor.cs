@@ -20,6 +20,9 @@ public partial class Index
     private IEnumerable<ContactResponse>? BirthDayContacts { get; set; }
     private IEnumerable<ContactResponse>? ScheduledContacts { get; set; }
 
+    private IEnumerable<ContactResponse>? Next7BirthDayContacts { get; set; }
+    private IEnumerable<(ContactResponse contact, DateTime scheduledDate)>? Next7ScheduledContacts { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         try
@@ -32,7 +35,7 @@ public partial class Index
             if (exception.StatusCode == HttpStatusCode.Unauthorized)
             {
                 await IdentityService.Logout();
-                Navigation.NavigateTo("/login");
+                Navigation.NavigateTo("user/login");
             }
         }
     }
@@ -40,16 +43,29 @@ public partial class Index
     private void FilterContacts()
     {
         var todayBDayContacts = Contacts!.Items
-            .Where(x => x.DateOfBirth?.Month == Today.Month
-                    && x.DateOfBirth?.Day == Today.Day);
+            .Where(x => ContactDateHelper.IsBirthDate(x.DateOfBirth, Today));
 
         var todayScheduledContacts = Contacts!.Items
-            .Where(x => (x.StartDate != null && x.Frequency != null)
-                    && ScheduleDateHelper.IsNextDate(x.Frequency,
-                        ((DateTime)x.StartDate),
+            .Where(x => ContactDateHelper.IsNextDate(x.Frequency,
+                        x.StartDate,
                         Today));
 
-        BirthDayContacts = todayBDayContacts.Any() ? todayBDayContacts : Enumerable.Empty<ContactResponse>();
-        ScheduledContacts = todayScheduledContacts.Any() ? todayScheduledContacts : Enumerable.Empty<ContactResponse>();
+        var next7BDayContacts = Contacts!.Items
+            .Where(x => ContactDateHelper.IsBirthDateWithin7Days(x.DateOfBirth, Today));
+
+        var next7ScheduledContacts = ContactDateHelper.GetContactsScheduledWithin7Days(Contacts!.Items, Today);
+
+        BirthDayContacts = todayBDayContacts.Any()
+            ? todayBDayContacts
+            : Enumerable.Empty<ContactResponse>();
+        ScheduledContacts = todayScheduledContacts.Any()
+            ? todayScheduledContacts
+            : Enumerable.Empty<ContactResponse>();
+        Next7BirthDayContacts = next7BDayContacts.Any()
+            ? next7BDayContacts
+            : Enumerable.Empty<ContactResponse>();
+        Next7ScheduledContacts = next7ScheduledContacts.Any()
+            ? next7ScheduledContacts
+            : Enumerable.Empty<(ContactResponse, DateTime)>();
     }
 }

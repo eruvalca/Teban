@@ -8,12 +8,19 @@
         <h3>Birthdays</h3>
         @if (BirthDayContacts != null)
         {
-            <ul>
-                @foreach (var bDayContact in BirthDayContacts)
-                {
-                    <li>@bDayContact.FirstName</li>
-                }
-            </ul>
+            @if (BirthDayContacts.Any())
+            {
+                <ul>
+                    @foreach (var bDayContact in BirthDayContacts)
+                    {
+                        <li>@bDayContact.FirstLastName</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No birthdays today</p>
+            }
         }
         else
         {
@@ -23,12 +30,64 @@
         <h3>Scheduled</h3>
         @if (ScheduledContacts != null)
         {
-            <ul>
-                @foreach (var scheduledContact in ScheduledContacts)
-                {
-                    <li>@scheduledContact.FirstName</li>
-                }
-            </ul>
+            @if (ScheduledContacts.Any())
+            {
+                <ul>
+                    @foreach (var scheduledContact in ScheduledContacts)
+                    {
+                        <li>@scheduledContact.FirstLastName</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No contacts scheduled today</p>
+            }
+        }
+        else
+        {
+            <LoadingSpinner />
+        }
+
+        <h1>Next 7 days</h1>
+        <h3>Birthdays</h3>
+        @if (Next7BirthDayContacts != null)
+        {
+            @if (Next7BirthDayContacts.Any())
+            {
+                <ul>
+                    @foreach (var bDayContact in Next7BirthDayContacts)
+                    {
+                        <li>@bDayContact.FirstLastName <small class="text-muted">@(((DateTime)bDayContact.DateOfBirth!).ToShortDateString())</small></li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No birthdays in the next 7 days</p>
+            }
+        }
+        else
+        {
+            <LoadingSpinner />
+        }
+
+        <h3>Scheduled</h3>
+        @if (Next7ScheduledContacts != null)
+        {
+            @if (Next7ScheduledContacts.Any())
+            {
+                <ul>
+                    @foreach (var scheduled in Next7ScheduledContacts)
+                    {
+                        <li>@scheduled.contact.FirstLastName <small class="text-muted">@(((DateTime)scheduled.scheduledDate!).ToShortDateString())</small></li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No contacts scheduled in the next 7 days</p>
+            }
         }
         else
         {
@@ -38,7 +97,7 @@
     <NotAuthorized>
         <div class="row">
             <div class="col-12 text-center">
-                <h3 class="page-header">Welcome to TimeKeepr</h3>
+                <h3 class="page-header">Welcome to Teban</h3>
                 <p>Log in or Register to get started</p>
             </div>
         </div>

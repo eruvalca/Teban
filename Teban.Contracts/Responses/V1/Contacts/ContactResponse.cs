@@ -13,4 +13,7 @@ public class ContactResponse
     public string TebanUserId { get; set; } = string.Empty;
     public string? Frequency { get; set; }
     public DateTime? StartDate { get; set; }
+
+    public string FullName => $"{FirstName} {MiddleName} {LastName}";
+    public string FirstLastName => $"{FirstName} {LastName}";
 }

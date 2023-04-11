@@ -4,35 +4,8 @@ using Teban.Contracts.Helpers.V1;
 
 namespace Teban.Contracts.Tests.Unit.Helpers.V1;
 
-public class ScheduleDateHelperTests
+public class ContactDateHelperTests
 {
-    [Theory]
-    [InlineData(2022, 1, 1, 2022, 1, 8, true)]
-    [InlineData(2022, 1, 1, 2022, 1, 15, true)]
-    [InlineData(2022, 1, 1, 2022, 1, 22, true)]
-    [InlineData(2022, 1, 1, 2022, 1, 29, true)]
-    [InlineData(2022, 1, 1, 2022, 2, 5, true)]
-    [InlineData(2022, 1, 1, 2022, 2, 12, true)]
-    [InlineData(2022, 1, 1, 2022, 2, 19, true)]
-    [InlineData(2022, 1, 1, 2022, 2, 26, true)]
-    [InlineData(2022, 1, 1, 2022, 3, 5, true)]
-    [InlineData(2022, 1, 1, 2022, 3, 12, true)]
-    public void IsNextDate_ReturnsTrue_WhenFrequencyIsDaily(
-        int startYear, int startMonth, int startDay,
-        int dateToCheckYear, int dateToCheckMonth, int dateToCheckDay,
-        bool expected)
-    {
-        // Arrange
-        var startDate = new DateTime(startYear, startMonth, startDay);
-        var dateToCheck = new DateTime(dateToCheckYear, dateToCheckMonth, dateToCheckDay);
-
-        // Act
-        var result = ScheduleDateHelper.IsNextDate(Frequency.Daily, startDate, dateToCheck);
-
-        // Assert
-        result.Should().Be(expected);
-    }
-
     [Theory]
     [InlineData(2022, 1, 1, 2022, 1, 8, true)]
     [InlineData(2022, 1, 1, 2022, 1, 15, true)]
@@ -54,7 +27,7 @@ public class ScheduleDateHelperTests
         var dateToCheck = new DateTime(dateToCheckYear, dateToCheckMonth, dateToCheckDay);
 
         // Act
-        var result = ScheduleDateHelper.IsNextDate(Frequency.Weekly, startDate, dateToCheck);
+        var result = ContactDateHelper.IsNextDate(Frequency.Weekly, startDate, dateToCheck);
 
         // Assert
         result.Should().Be(expected);
@@ -81,7 +54,7 @@ public class ScheduleDateHelperTests
         var dateToCheck = new DateTime(dateToCheckYear, dateToCheckMonth, dateToCheckDay);
 
         // Act
-        var result = ScheduleDateHelper.IsNextDate(Frequency.Weekly, startDate, dateToCheck);
+        var result = ContactDateHelper.IsNextDate(Frequency.Weekly, startDate, dateToCheck);
 
         // Assert
         result.Should().Be(expected);
@@ -108,7 +81,7 @@ public class ScheduleDateHelperTests
         var dateToCheck = new DateTime(dateToCheckYear, dateToCheckMonth, dateToCheckDay);
 
         // Act
-        var result = ScheduleDateHelper.IsNextDate(Frequency.BiWeekly, startDate, dateToCheck);
+        var result = ContactDateHelper.IsNextDate(Frequency.BiWeekly, startDate, dateToCheck);
 
         // Assert
         result.Should().Be(expected);
@@ -135,7 +108,7 @@ public class ScheduleDateHelperTests
         var dateToCheck = new DateTime(dateToCheckYear, dateToCheckMonth, dateToCheckDay);
 
         // Act
-        var result = ScheduleDateHelper.IsNextDate(Frequency.BiWeekly, startDate, dateToCheck);
+        var result = ContactDateHelper.IsNextDate(Frequency.BiWeekly, startDate, dateToCheck);
 
         // Assert
         result.Should().Be(expected);
@@ -162,7 +135,7 @@ public class ScheduleDateHelperTests
         var dateToCheck = new DateTime(dateToCheckYear, dateToCheckMonth, dateToCheckDay);
 
         // Act
-        var result = ScheduleDateHelper.IsNextDate(Frequency.Monthly, startDate, dateToCheck);
+        var result = ContactDateHelper.IsNextDate(Frequency.Monthly, startDate, dateToCheck);
 
         // Assert
         result.Should().Be(expected);
@@ -189,7 +162,7 @@ public class ScheduleDateHelperTests
         var dateToCheck = new DateTime(dateToCheckYear, dateToCheckMonth, dateToCheckDay);
 
         // Act
-        var result = ScheduleDateHelper.IsNextDate(Frequency.Monthly, startDate, dateToCheck);
+        var result = ContactDateHelper.IsNextDate(Frequency.Monthly, startDate, dateToCheck);
 
         // Assert
         result.Should().Be(expected);
@@ -216,7 +189,7 @@ public class ScheduleDateHelperTests
         var dateToCheck = new DateTime(dateToCheckYear, dateToCheckMonth, dateToCheckDay);
 
         // Act
-        var result = ScheduleDateHelper.IsNextDate(Frequency.Monthly, startDate, dateToCheck);
+        var result = ContactDateHelper.IsNextDate(Frequency.Monthly, startDate, dateToCheck);
 
         // Assert
         result.Should().Be(expected);
@@ -243,7 +216,7 @@ public class ScheduleDateHelperTests
         var dateToCheck = new DateTime(dateToCheckYear, dateToCheckMonth, dateToCheckDay);
 
         // Act
-        var result = ScheduleDateHelper.IsNextDate(Frequency.BiMonthly, startDate, dateToCheck);
+        var result = ContactDateHelper.IsNextDate(Frequency.BiMonthly, startDate, dateToCheck);
 
         // Assert
         result.Should().Be(expected);
@@ -270,7 +243,7 @@ public class ScheduleDateHelperTests
         var dateToCheck = new DateTime(dateToCheckYear, dateToCheckMonth, dateToCheckDay);
 
         // Act
-        var result = ScheduleDateHelper.IsNextDate(Frequency.BiMonthly, startDate, dateToCheck);
+        var result = ContactDateHelper.IsNextDate(Frequency.BiMonthly, startDate, dateToCheck);
 
         // Assert
         result.Should().Be(expected);
@@ -297,7 +270,7 @@ public class ScheduleDateHelperTests
         var dateToCheck = new DateTime(dateToCheckYear, dateToCheckMonth, dateToCheckDay);
 
         // Act
-        var result = ScheduleDateHelper.IsNextDate(Frequency.Quarterly, startDate, dateToCheck);
+        var result = ContactDateHelper.IsNextDate(Frequency.Quarterly, startDate, dateToCheck);
 
         // Assert
         result.Should().Be(expected);
@@ -324,7 +297,7 @@ public class ScheduleDateHelperTests
         var dateToCheck = new DateTime(dateToCheckYear, dateToCheckMonth, dateToCheckDay);
 
         // Act
-        var result = ScheduleDateHelper.IsNextDate(Frequency.Quarterly, startDate, dateToCheck);
+        var result = ContactDateHelper.IsNextDate(Frequency.Quarterly, startDate, dateToCheck);
 
         // Assert
         result.Should().Be(expected);
@@ -351,7 +324,7 @@ public class ScheduleDateHelperTests
         var dateToCheck = new DateTime(dateToCheckYear, dateToCheckMonth, dateToCheckDay);
 
         // Act
-        var result = ScheduleDateHelper.IsNextDate(Frequency.BiAnnually, startDate, dateToCheck);
+        var result = ContactDateHelper.IsNextDate(Frequency.BiAnnually, startDate, dateToCheck);
 
         // Assert
         result.Should().Be(expected);
@@ -378,7 +351,7 @@ public class ScheduleDateHelperTests
         var dateToCheck = new DateTime(dateToCheckYear, dateToCheckMonth, dateToCheckDay);
 
         // Act
-        var result = ScheduleDateHelper.IsNextDate(Frequency.BiAnnually, startDate, dateToCheck);
+        var result = ContactDateHelper.IsNextDate(Frequency.BiAnnually, startDate, dateToCheck);
 
         // Assert
         result.Should().Be(expected);
@@ -405,7 +378,7 @@ public class ScheduleDateHelperTests
         var dateToCheck = new DateTime(dateToCheckYear, dateToCheckMonth, dateToCheckDay);
 
         // Act
-        var result = ScheduleDateHelper.IsNextDate(Frequency.Annually, startDate, dateToCheck);
+        var result = ContactDateHelper.IsNextDate(Frequency.Annually, startDate, dateToCheck);
 
         // Assert
         result.Should().Be(expected);
@@ -432,7 +405,57 @@ public class ScheduleDateHelperTests
         var dateToCheck = new DateTime(dateToCheckYear, dateToCheckMonth, dateToCheckDay);
 
         // Act
-        var result = ScheduleDateHelper.IsNextDate(Frequency.Annually, startDate, dateToCheck);
+        var result = ContactDateHelper.IsNextDate(Frequency.Annually, startDate, dateToCheck);
+
+        // Assert
+        result.Should().Be(expected);
+    }
+
+    // write unit tests for ContactDateHelper.IsDateLastDayOfMonth method
+    [Theory]
+    [InlineData(2022, 1, 31, true)]
+    [InlineData(2022, 2, 28, true)]
+    [InlineData(2022, 3, 31, true)]
+    [InlineData(2022, 4, 30, true)]
+    [InlineData(2022, 5, 31, true)]
+    [InlineData(2022, 6, 30, true)]
+    [InlineData(2022, 7, 31, true)]
+    [InlineData(2022, 8, 31, true)]
+    [InlineData(2022, 9, 30, true)]
+    [InlineData(2022, 10, 31, true)]
+    public void IsDateLastDayOfMonth_ReturnsTrue_WhenDateIsLastDayOfMonth(
+        int year, int month, int day, bool expected)
+    {
+        // Arrange
+        var date = new DateTime(year, month, day);
+
+        // Act
+        var result = ContactDateHelper.IsDateLastDayOfMonth(date);
+
+        // Assert
+        result.Should().Be(expected);
+    }
+
+    // write unit tests for ContactDateHelper.IsDateLastDayOfMonth method that will return false when the date is not the last day of the month
+    [Theory]
+    [InlineData(2022, 1, 1, false)]
+    [InlineData(2022, 2, 1, false)]
+    [InlineData(2022, 3, 1, false)]
+    [InlineData(2022, 4, 1, false)]
+    [InlineData(2022, 5, 1, false)]
+    [InlineData(2022, 6, 1, false)]
+    [InlineData(2022, 7, 1, false)]
+    [InlineData(2022, 8, 1, false)]
+    [InlineData(2022, 9, 1, false)]
+    [InlineData(2022, 10, 1, false)]
+    public void IsDateLastDayOfMonth_ReturnsFalse_WhenDateIsNotLastDayOfMonth(
+        int year, int month, int day, bool expected)
+    {
+        // Arrange
+        var date = new DateTime(year, month, day);
+
+        // Act
+        var result = ContactDateHelper.IsDateLastDayOfMonth(date);
 
         // Assert
         result.Should().Be(expected);

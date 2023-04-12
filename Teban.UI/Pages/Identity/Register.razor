@@ -14,45 +14,37 @@
 <EditForm Model="RegisterRequest" OnValidSubmit="HandleSubmit">
     <div class="row">
         <div class="col-12">
-            <div class="form-group">
-                <label class="form-label">Email</label>
-                <InputText class="form-control" @bind-Value="RegisterRequest.Email" />
-            </div>
+            <label class="form-label">Email</label>
+            <InputText class="form-control" @bind-Value="RegisterRequest.Email" />
 
-            <div class="form-group">
-                <label class="form-label">Password</label>
-                <InputText type="password" class="form-control" @bind-Value="RegisterRequest.Password" />
-            </div>
+            <label class="form-label mt-1">Password</label>
+            <InputText type="password" class="form-control" @bind-Value="RegisterRequest.Password" />
 
-            <div class="form-group">
-                <label class="form-label">Confirm Password</label>
-                <InputText type="password" class="form-control" @bind-Value="RegisterRequest.ConfirmPassword" />
-            </div>
+            <label class="form-label mt-1">Confirm Password</label>
+            <InputText type="password" class="form-control" @bind-Value="RegisterRequest.ConfirmPassword" />
 
-            <div class="form-group">
-                <label class="form-label">First Name</label>
-                <InputText class="form-control" @bind-Value="RegisterRequest.FirstName" />
-            </div>
+            <label class="form-label mt-1">First Name</label>
+            <InputText class="form-control" @bind-Value="RegisterRequest.FirstName" />
 
-            <div class="form-group">
-                <label class="form-label">Last Name</label>
-                <InputText class="form-control" @bind-Value="RegisterRequest.LastName" />
-            </div>
+            <label class="form-label mt-1">Last Name</label>
+            <InputText class="form-control" @bind-Value="RegisterRequest.LastName" />
 
-            <div class="form-group text-end">
-                <button type="reset" class="btn btn-secondary" @onclick='() => Navigation.NavigateTo("/")'>Cancel</button>
+            <div class="row mt-3">
+                <div class="col-12 text-end">
+                    <button type="reset" class="btn btn-secondary" @onclick='() => Navigation.NavigateTo("/")'>Cancel</button>
 
-                @if (DisableSubmit)
-                {
-                    <button type="button" class="btn btn-success ms-1" disabled>
-                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        Registering...
-                    </button>
-                }
-                else
-                {
-                    <button type="submit" class="btn btn-success ms-1">Register</button>
-                }
+                    @if (DisableSubmit)
+                    {
+                        <button type="button" class="btn btn-success ms-1" disabled>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Registering...
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-success ms-1">Register</button>
+                    }
+                </div>
             </div>
         </div>
     </div>

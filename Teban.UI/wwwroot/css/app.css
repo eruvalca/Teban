@@ -1,7 +1,8 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .valid.modified:not([type=checkbox]) {
@@ -16,8 +17,8 @@ html, body {
     color: red;
 }
 
-.form-group {
-    margin-bottom: 15px;
+.form-label {
+    margin-bottom: 0;
 }
 
 div.card {

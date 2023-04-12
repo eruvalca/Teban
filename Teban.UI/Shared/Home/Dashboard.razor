@@ -58,7 +58,7 @@
         {
             @if (Next7BirthDayContacts.Any())
             {
-                <UpcomingBirthDayContactsListGroup Contacts="Next7BirthDayContacts.OrderBy(x => x.LastName).ThenBy(x => x.FirstName)" />
+                <UpcomingBirthDayContactsListGroup Contacts="Next7BirthDayContacts.OrderBy(x => x.DateOfBirth).ThenBy(x => x.LastName).ThenBy(x => x.FirstName)" />
             }
             else
             {
@@ -77,7 +77,7 @@
         {
             @if (Next7ScheduledContacts.Any())
             {
-                <UpcomingContactsListGroup Contacts="Next7ScheduledContacts.OrderBy(x => x.contact.LastName).ThenBy(x => x.contact.FirstName)" />
+                <UpcomingContactsListGroup Contacts="Next7ScheduledContacts.OrderBy(x => x.scheduledDate).ThenBy(x => x.contact.LastName).ThenBy(x => x.contact.FirstName)" />
             }
             else
             {

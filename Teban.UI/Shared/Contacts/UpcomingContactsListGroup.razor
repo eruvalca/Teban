@@ -1,0 +1,10 @@
+﻿
+<ul class="list-group shadow">
+    @foreach (var contact in Contacts)
+    {
+        <li href="#" class="list-group-item">
+            <h5 class="mb-0">@contact.contact.FirstLastName</h5>
+            <span class="text-muted">@(((DateTime)contact.scheduledDate!).ToShortDateString())</span>
+        </li>
+    }
+</ul>

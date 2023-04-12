@@ -1,0 +1,31 @@
+﻿
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-9">
+                <h5 class="mb-0">@Contact.FullName</h5>
+            </div>
+            <div class="col-3 text-end">
+                <a href=@($"/contact/update/{Contact.ContactId}")>Update</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        @if (Contact.Frequency is not null && Contact.StartDate is not null)
+        {
+            <p class="mb-0">Next (@Contact.Frequency): @ContactDateHelper.GetNextScheduledDate(Contact.Frequency, Contact.StartDate.Value, DateTime.Today).ToLongDateString()</p>
+        }
+        @if (Contact.DateOfBirth is not null)
+        {
+            <p class="mb-0">Birthday: @Contact.DateOfBirth.Value.ToLongDateString()</p>
+        }
+        @if (!string.IsNullOrEmpty(Contact.Email))
+        {
+            <p class="mb-0"><a href="mailto:@Contact.Email">@Contact.Email</a></p>
+        }
+        @if (!string.IsNullOrEmpty(Contact.Phone))
+        {
+            <p class="mb-0"><a href="callto:@Contact.Phone">@Contact.Phone</a></p>
+        }
+    </div>
+</div>

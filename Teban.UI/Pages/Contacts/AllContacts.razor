@@ -1,60 +1,32 @@
 ﻿@page "/contacts"
 
 <div class="row">
-    <div class="col-12">
+    <div class="col-6">
         <h3>All Contacts</h3>
+    </div>
+    <div class="col-6 text-end">
+        <a href="/contact/create">Add new contact</a>
     </div>
 </div>
 
 @if (Contacts is not null)
 {
     <div class="row">
-        <div class="col-12 col-md-4">
-            <div class="row">
-                @if (Contacts.Items.Any())
-                {
-                    @foreach (var contact in Contacts.Items.OrderBy(x => x.LastName).ThenBy(x => x.FirstName))
-                    {
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h4 class="mb-0">@contact.FirstLastName</h4>
-                                    @if (!string.IsNullOrEmpty(contact.MiddleName))
-                                    {
-                                        <p class="mb-0 text-muted">@contact.MiddleName</p>
-                                    }
-                                </div>
-                                <div class="card-body">
-                                    @if (contact.Frequency is not null && contact.StartDate is not null)
-                                    {
-                                        <p class="mb-0">Next (@contact.Frequency): @ContactDateHelper.GetNextScheduledDate(contact.Frequency, contact.StartDate.Value, DateTime.Today).ToLongDateString()</p>
-                                    }
-                                    @if (contact.DateOfBirth is not null)
-                                    {
-                                        <p class="mb-0">Birthday: @contact.DateOfBirth.Value.ToLongDateString()</p>
-                                    }
-                                    @if (!string.IsNullOrEmpty(contact.Email))
-                                    {
-                                        <p class="mb-0"><a href="mailto:@contact.Email">@contact.Email</a></p>
-                                    }
-                                    @if (!string.IsNullOrEmpty(contact.Phone))
-                                    {
-                                        <p class="mb-0"><a href="callto:@contact.Phone">@contact.Phone</a></p>
-                                    }
-                                    <a href=@($"/contact/update/{contact.ContactId}")>Update</a>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                }
-                else
-                {
-                    <div class="col-12">
-                        <p>No contacts found. <a href="/contact/create">Create</a> one to get started.</p>
-                    </div>
-                }
+        @if (Contacts.Items.Any())
+        {
+            @foreach (var contact in Contacts.Items.OrderBy(x => x.LastName).ThenBy(x => x.FirstName))
+            {
+                <div class="col-12 col-md-4">
+                    <ContactCard Contact="contact" />
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <p>No contacts found. <a href="/contact/create">Create</a> one to get started.</p>
             </div>
-        </div>
+        }
     </div>
 }
 else

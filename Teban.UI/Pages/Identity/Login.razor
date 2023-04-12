@@ -15,16 +15,7 @@
 
     @if (ShowError)
     {
-        <div class="row">
-            <div class="col-12">
-                <ul class="error-list">
-                    @foreach (var message in ErrorMessages)
-                    {
-                        <li class=validation-message>@message</li>
-                    }
-                </ul>
-            </div>
-        </div>
+        <ErrorList ErrorMessages="ErrorMessages" />
     }
 
     <div class="row">

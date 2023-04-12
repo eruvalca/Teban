@@ -1,0 +1,92 @@
+﻿
+<div class="row">
+    <div class="col-12">
+        <h1>@Today.ToLongDateString()</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-4 mb-3">
+        <h3>Birthdays</h3>
+        @if (BirthDayContacts != null)
+        {
+            @if (BirthDayContacts.Any())
+            {
+                <BirthDayContactsListGroup Contacts="BirthDayContacts.OrderBy(x => x.LastName).ThenBy(x => x.FirstName)" />
+            }
+            else
+            {
+                <p>No birthdays today.</p>
+            }
+        }
+        else
+        {
+            <LoadingSpinner />
+        }
+    </div>
+
+    <div class="col-12 col-md-4 mb-3">
+        <h3>Scheduled</h3>
+        @if (ScheduledContacts != null)
+        {
+            @if (ScheduledContacts.Any())
+            {
+                <ContactsListGroup Contacts="ScheduledContacts.OrderBy(x => x.LastName).ThenBy(x => x.FirstName)" />
+            }
+            else
+            {
+                <p>No contacts scheduled today.</p>
+            }
+        }
+        else
+        {
+            <LoadingSpinner />
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <h2>Upcoming</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 col-md-4">
+        <h3>Birthdays</h3>
+        @if (Next7BirthDayContacts != null)
+        {
+            @if (Next7BirthDayContacts.Any())
+            {
+                <UpcomingBirthDayContactsListGroup Contacts="Next7BirthDayContacts.OrderBy(x => x.LastName).ThenBy(x => x.FirstName)" />
+            }
+            else
+            {
+                <p>No birthdays in the next 7 days.</p>
+            }
+        }
+        else
+        {
+            <LoadingSpinner />
+        }
+    </div>
+
+    <div class="col-12 col-md-4 mb-3">
+        <h3>Scheduled</h3>
+        @if (Next7ScheduledContacts != null)
+        {
+            @if (Next7ScheduledContacts.Any())
+            {
+                <UpcomingContactsListGroup Contacts="Next7ScheduledContacts.OrderBy(x => x.contact.LastName).ThenBy(x => x.contact.FirstName)" />
+            }
+            else
+            {
+                <p>No contacts scheduled in the next 7 days.</p>
+            }
+        }
+        else
+        {
+            <LoadingSpinner />
+        }
+    </div>
+</div>

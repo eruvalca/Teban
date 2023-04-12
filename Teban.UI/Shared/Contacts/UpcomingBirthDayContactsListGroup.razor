@@ -1,0 +1,9 @@
+﻿
+<ul class="list-group shadow">
+    @foreach (var contact in Contacts)
+    {
+        <li href="#" class="list-group-item">
+            <h5 class="mb-0">@contact.FirstLastName <small class="text-muted">(@(((DateTime)contact.DateOfBirth!).GetAge()))</small></h5>
+        </li>
+    }
+</ul>

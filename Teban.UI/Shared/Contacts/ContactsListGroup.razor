@@ -1,0 +1,17 @@
+﻿
+<ul class="list-group shadow">
+    @foreach (var contact in Contacts)
+    {
+        <li href="#" class="list-group-item">
+            <h5 class="mb-0">@contact.FirstLastName</h5>
+            <div class="row">
+                <div class="col-6 text-start">
+                    <a href="mailto:@contact.Email"><small>@contact.Email</small></a>
+                </div>
+                <div class="col-6 text-end">
+                    <a href="callto:@contact.Phone"><small>@contact.Phone</small></a>
+                </div>
+            </div>
+        </li>
+    }
+</ul>

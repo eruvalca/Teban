@@ -128,7 +128,7 @@ public static class ContactDateHelper
             return false;
         }
 
-        var birthDayDate = new DateTime(birthDate.Value.Year, birthDate.Value.Month, birthDate.Value.Day);
+        var birthDayDate = new DateTime(dateToCheck.Year, birthDate.Value.Month, birthDate.Value.Day);
 
         return birthDayDate > dateToCheck && birthDayDate <= dateToCheck.AddDays(7);
     }

@@ -2,7 +2,7 @@
 <ul class="list-group shadow">
     @foreach (var contact in Contacts)
     {
-        <li href="#" class="list-group-item">
+        <li href="#" class="list-group-item border-primary">
             <h5 class="mb-0">@contact.FirstLastName <small class="text-muted">(@(((DateTime)contact.DateOfBirth!).GetAgeAtDate(new DateTime(DateTime.Today.Year, contact.DateOfBirth.Value.Month, contact.DateOfBirth.Value.Day))))</small></h5>
             <span class="text-muted">@(((DateTime)contact.DateOfBirth!).ToShortDateString())</span>
         </li>

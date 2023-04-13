@@ -3,6 +3,7 @@
 
 html, body {
     font-family: 'Montserrat', sans-serif;
+    color: #525050;
 }
 
 .valid.modified:not([type=checkbox]) {
@@ -21,6 +22,36 @@ html, body {
     margin-bottom: 0;
 }
 
+h1, h2, h4 {
+    color: #9d4300;
+    font-weight: 900;
+}
+
+h3, h5, h6 {
+    color: #9d4300;
+    font-weight: 500;
+}
+
 div.card {
     margin-bottom: 20px;
+}
+
+.list-group {
+    border-radius: 1rem;
+}
+
+.card {
+    border-radius: 1rem;
+}
+
+.card-header:first-child {
+    border-radius: 1rem 1rem 0 0;
+}
+
+.form-control {
+    border-radius: 1rem;
+}
+
+.btn {
+    border-radius: 1rem;
 }

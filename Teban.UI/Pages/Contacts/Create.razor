@@ -6,6 +6,12 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-12">
+        <label>Upload CSV to import multiple contacts: <InputFile OnChange="@HandleFileSelected" /></label>
+    </div>
+</div>
+
 @if (ShowError)
 {
     <ErrorList ErrorMessages="ErrorMessages" />

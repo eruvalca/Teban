@@ -125,4 +125,23 @@ public class ContactsController : ControllerBase
 
         return !deleted ? NotFound() : Ok();
     }
+
+    [HttpPost(ApiEndpoints.Contacts.Import)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> Import([FromBody] ImportContactsRequest request, CancellationToken ctoken = default)
+    {
+        var contacts = request.MapToContacts();
+        var createResult = await _contactService.ImportAsync(contacts, ctoken);
+
+        if (!createResult)
+        {
+            return BadRequest("Something went wrong. Please try again later.");
+        }
+
+        var contactsResponse = contacts.MapToResponse();
+        return CreatedAtAction(nameof(GetAll), contactsResponse);
+    }
 }

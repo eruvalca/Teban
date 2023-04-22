@@ -138,4 +138,9 @@ public static class ContractMapping
             ContactId = updateScheduleRequest.ContactId
         };
     }
+
+    public static IEnumerable<Contact> MapToContacts(this ImportContactsRequest importContactRequest)
+    {
+        return importContactRequest.Contacts.Select(MapToContact);
+    }
 }

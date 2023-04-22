@@ -21,6 +21,7 @@ public static class ApiEndpoints
         public const string GetAll = Base;
         public const string Update = $"{Base}/{{id}}";
         public const string Delete = $"{Base}/{{id}}";
+        public const string Import = $"{Base}/import";
     }
 
     public static class CommunicationSchedules

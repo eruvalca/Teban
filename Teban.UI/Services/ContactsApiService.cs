@@ -81,4 +81,30 @@ public class ContactsApiService : IContactsApiService
     {
         await _contactsApi.DeleteContactAsync(id);
     }
+
+    public async Task<ContactsResponse> ImportContactsAsync(ImportContactsRequest request)
+    {
+        ContactsResponse response;
+
+        try
+        {
+            response = await _contactsApi.ImportContactsAsync(request);
+        }
+        catch (ApiException apiException)
+        {
+            var validationResponse = JsonSerializer.Deserialize<ValidationFailureResponse>(apiException.Content!, new JsonSerializerOptions()
+            {
+                PropertyNameCaseInsensitive = true
+            })!;
+
+            if (validationResponse.Errors.Any())
+            {
+                throw new ValidationFailureException(validationResponse);
+            }
+
+            throw;
+        }
+
+        return response;
+    }
 }

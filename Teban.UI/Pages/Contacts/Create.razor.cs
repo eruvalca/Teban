@@ -25,13 +25,20 @@ public partial class Create
         LastName = string.Empty
     };
 
+    private string TebanUserId { get; set; } = string.Empty;
+
     private List<string> ErrorMessages { get; set; } = new List<string>();
     private bool ShowError { get; set; } = false;
     private bool DisableSubmit { get; set; } = false;
 
+    protected override async Task OnInitializedAsync()
+    {
+        TebanUserId = await IdentityService.GetUserId();
+    }
+
     private async Task HandleSubmit()
     {
-        CreateRequest.TebanUserId = await IdentityService.GetUserId();
+        CreateRequest.TebanUserId = TebanUserId;
 
         DisableSubmit = true;
         ShowError = false;
@@ -61,6 +68,36 @@ public partial class Create
         }
     }
 
+    private async Task SubmitImport(ImportContactsRequest importContactsRequest)
+    {
+        DisableSubmit = true;
+        ShowError = false;
+
+        ContactsResponse? response;
+
+        try
+        {
+            response = await ContactsApiService.ImportContactsAsync(importContactsRequest);
+            Navigation.NavigateTo("/contacts");
+        }
+        catch (ValidationFailureException validationException)
+        {
+            ErrorMessages = validationException.ValidationResponse
+                .Errors
+                .Select(x => x.Message)
+                .ToList();
+
+            ShowError = true;
+            DisableSubmit = false;
+        }
+        catch (Exception exception)
+        {
+            ErrorMessages = new List<string> { exception.Message };
+            ShowError = true;
+            DisableSubmit = false;
+        }
+    }
+
     private async Task HandleFileSelected(InputFileChangeEventArgs e)
     {
         var file = e.File;
@@ -69,7 +106,16 @@ public partial class Create
             var buffer = new byte[file.Size];
             await file.OpenReadStream().ReadAsync(buffer);
             var content = Encoding.UTF8.GetString(buffer);
-            ParseCsv(content);
+            var importContacts = ParseCsv(content);
+
+            if (importContacts.Any())
+            {
+                var importContactsRequest = new ImportContactsRequest
+                {
+                    Contacts = importContacts
+                };
+                await SubmitImport(importContactsRequest);
+            }
         }
     }
 
@@ -79,7 +125,8 @@ public partial class Create
         var config = new CsvHelper.Configuration.CsvConfiguration(CultureInfo.InvariantCulture)
         {
             HasHeaderRecord = true,
-            Delimiter = ","
+            Delimiter = ",",
+            MissingFieldFound = null
         };
 
         using var reader = new StringReader(csvContent);
@@ -91,11 +138,12 @@ public partial class Create
             {
                 var record = new CreateContactRequest
                 {
-                    FirstName = csv.GetField("First Name") ?? string.Empty,
-                    MiddleName = csv.GetField("Middle Name") ?? string.Empty,
-                    LastName = csv.GetField("Last Name") ?? string.Empty,
-                    Phone = csv.GetField("Mobile Phone") ?? string.Empty,
-                    Email = csv.GetField("E-mail Address") ?? string.Empty
+                    FirstName = csv.GetField(0) ?? string.Empty,
+                    MiddleName = csv.GetField(1) ?? string.Empty,
+                    LastName = csv.GetField(2) ?? string.Empty,
+                    Phone = csv.GetField(3) ?? string.Empty,
+                    Email = csv.GetField(4) ?? string.Empty,
+                    TebanUserId = TebanUserId
                 };
 
                 if (!string.IsNullOrEmpty(record.FirstName) && !string.IsNullOrEmpty(record.FirstName))

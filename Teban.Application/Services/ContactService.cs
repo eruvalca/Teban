@@ -112,4 +112,15 @@ public class ContactService : IContactService
         var deleteResult = await _context.SaveChangesAsync(cToken);
         return deleteResult > 0;
     }
+
+    public async Task<bool> ImportAsync(IEnumerable<Contact> contacts, CancellationToken cToken = default)
+    {
+        foreach (var contact in contacts)
+        {
+            await _contactValidator.ValidateAndThrowAsync(contact, cancellationToken: cToken);
+        }
+
+        await _context.Contacts.AddRangeAsync(contacts);
+        return await _context.SaveChangesAsync(cToken) > 0;
+    }
 }

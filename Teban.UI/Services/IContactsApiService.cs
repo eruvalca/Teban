@@ -13,4 +13,6 @@ public interface IContactsApiService
     Task<ContactResponse> UpdateContactAsync(int id, UpdateContactRequest request);
 
     Task DeleteContactAsync(int id);
+
+    Task<ContactsResponse> ImportContactsAsync(ImportContactsRequest request);
 }

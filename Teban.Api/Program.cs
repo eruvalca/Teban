@@ -50,7 +50,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: allowedSpecificOrigins,
         policy =>
         {
-            policy.WithOrigins("https://localhost:7169", "https://www.teban.app")
+            policy.WithOrigins(new string[] { "https://localhost:7169", "https://www.teban.app" })
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });

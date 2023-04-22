@@ -16,7 +16,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 string tebanApiBaseAddress = builder.HostEnvironment.IsDevelopment()
     ? "https://localhost:7002"
-    : "https://localhost:7002";
+    : "https://tebanapi.azurewebsites.net";
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<ILocalSecureStorage, BrowserLocalSecureStorage>();

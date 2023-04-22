@@ -75,6 +75,13 @@ public class ContactService : IContactService
                 existingContact.CommunicationSchedule = newCommunicationSchedule;
             }
         }
+        else
+        {
+            if (existingContact.CommunicationSchedule is not null)
+            {
+                _context.CommunicationSchedules.Remove(existingContact.CommunicationSchedule);
+            }
+        }
 
         existingContact.FirstName = contact.FirstName;
         existingContact.MiddleName = contact.MiddleName;

@@ -1,14 +1,8 @@
 ﻿
 <div class="card border-primary shadow">
     <div class="card-header">
-        <div class="row">
-            <div class="col-9">
-                <h5 class="mb-0">@Contact.FullName</h5>
-            </div>
-            <div class="col-3 text-end">
-                <a href=@($"/contact/update/{Contact.ContactId}")>Update</a>
-            </div>
-        </div>
+        <h5 class="mb-0">@Contact.FullName</h5>
+        <small><a href=@($"/contact/update/{Contact.ContactId}")>Update</a></small>
     </div>
     <div class="card-body">
         @if (Contact.Frequency is not null && Contact.StartDate is not null)
@@ -25,7 +19,7 @@
         }
         @if (!string.IsNullOrEmpty(Contact.Phone))
         {
-            <p class="mb-0"><a href="callto:@Contact.Phone">@Contact.Phone</a></p>
+            <p class="mb-0"><a href="tel:@Contact.Phone">@Contact.Phone</a></p>
         }
     </div>
 </div>

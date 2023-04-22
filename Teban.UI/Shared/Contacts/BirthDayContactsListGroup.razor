@@ -6,10 +6,10 @@
             <h5 class="mb-0">@contact.FirstLastName <small class="text-muted">(@(((DateTime)contact.DateOfBirth!).GetAge()))</small></h5>
             <div class="row">
                 <div class="col-6 text-start">
-                    <a href="mailto:@contact.Email"><small>@contact.Email</small></a>
+                    <a href="mailto:@contact.Email">@contact.Email</a>
                 </div>
                 <div class="col-6 text-end">
-                    <a href="callto:@contact.Phone"><small>@contact.Phone</small></a>
+                    <a href="tel:@contact.Phone">@contact.Phone</a>
                 </div>
             </div>
         </li>

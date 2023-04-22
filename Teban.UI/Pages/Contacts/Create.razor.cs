@@ -141,14 +141,14 @@ public partial class Create
                     FirstName = csv.GetField(0) ?? string.Empty,
                     MiddleName = csv.GetField(1) ?? string.Empty,
                     LastName = csv.GetField(2) ?? string.Empty,
-                    Phone = csv.GetField(3) ?? string.Empty,
-                    Email = csv.GetField(4) ?? string.Empty,
+                    Email = csv.GetField(3) ?? string.Empty,
+                    Phone = csv.GetField(4) ?? string.Empty,
                     TebanUserId = TebanUserId
                 };
 
                 if (!string.IsNullOrEmpty(record.FirstName) && !string.IsNullOrEmpty(record.FirstName))
                 {
-                    var bDay = csv.GetField("Birthday");
+                    var bDay = csv.GetField(5);
                     if (!string.IsNullOrEmpty(bDay))
                     {
                         if (DateTime.TryParse(bDay, out DateTime bDayDate))

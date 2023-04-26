@@ -1,0 +1,12 @@
+.delete-multiple {
+    width: 300px;
+    position: fixed;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 999;
+}
+
+.multi-card {
+    padding: 10px 15px 10px 15px;
+}

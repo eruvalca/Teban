@@ -123,4 +123,19 @@ public class ContactService : IContactService
         await _context.Contacts.AddRangeAsync(contacts);
         return await _context.SaveChangesAsync(cToken) > 0;
     }
+
+    public async Task<bool> BulkDeleteAsync(IEnumerable<int> contactIds, CancellationToken cToken = default)
+    {
+        var existingContacts = await _context.Contacts
+            .Where(x => contactIds.Contains(x.ContactId))
+            .ToListAsync(cancellationToken: cToken);
+
+        if (!existingContacts.Any() || existingContacts.Count != contactIds.Count())
+        {
+            return false;
+        }
+
+        _context.Contacts.RemoveRange(existingContacts);
+        return await _context.SaveChangesAsync(cToken) > 0;
+    }
 }

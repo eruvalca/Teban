@@ -9,4 +9,5 @@ public interface IContactService
     Task<Contact?> UpdateAsync(Contact contact, string userId, CancellationToken token = default);
     Task<bool> DeleteByIdAsync(int id, CancellationToken token = default);
     Task<bool> ImportAsync(IEnumerable<Contact> contacts, CancellationToken cToken = default);
+    Task<bool> BulkDeleteAsync(IEnumerable<int> contactIds, CancellationToken cToken = default);
 }

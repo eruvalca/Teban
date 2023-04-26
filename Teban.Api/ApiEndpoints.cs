@@ -22,6 +22,7 @@ public static class ApiEndpoints
         public const string Update = $"{Base}/{{id:int}}";
         public const string Delete = $"{Base}/{{id:int}}";
         public const string Import = $"{Base}/import";
+        public const string BulkDelete = $"{Base}/bulkdelete";
     }
 
     public static class CommunicationSchedules

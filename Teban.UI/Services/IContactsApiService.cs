@@ -15,4 +15,6 @@ public interface IContactsApiService
     Task DeleteContactAsync(int id);
 
     Task<ContactsResponse> ImportContactsAsync(ImportContactsRequest request);
+
+    Task BulkDeleteContactsAsync(IEnumerable<int> ids);
 }

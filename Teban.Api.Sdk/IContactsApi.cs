@@ -24,4 +24,7 @@ public interface IContactsApi
 
     [Post(ApiEndpoints.Contacts.Import)]
     Task<ContactsResponse> ImportContactsAsync(ImportContactsRequest request);
+
+    [Post(ApiEndpoints.Contacts.BulkDelete)]
+    Task BulkDeleteContactsAsync(IEnumerable<int> ids);
 }

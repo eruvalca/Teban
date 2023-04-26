@@ -119,6 +119,7 @@ public class ContactsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Delete([FromRoute] int id, CancellationToken cToken = default)
     {
         var deleted = await _contactService.DeleteByIdAsync(id, cToken);
@@ -143,5 +144,17 @@ public class ContactsController : ControllerBase
 
         var contactsResponse = contacts.MapToResponse();
         return CreatedAtAction(nameof(GetAll), contactsResponse);
+    }
+
+    [HttpPost(ApiEndpoints.Contacts.BulkDelete)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> BulkDelete([FromBody] IEnumerable<int> ids, CancellationToken cToken = default)
+    {
+        var deleted = await _contactService.BulkDeleteAsync(ids, cToken);
+
+        return !deleted ? NotFound() : Ok();
     }
 }

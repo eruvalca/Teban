@@ -1,7 +1,7 @@
 ﻿
 <div class="card border-primary shadow">
     <div class="card-header">
-        <input type="checkbox" class="form-check-input" style="float: right;" checked="@IsSelected" @onchange="() => HandleSelectChange.InvokeAsync(ContactIndex)" />
+        <input type="checkbox" class="form-check-input" checked="@IsSelected" @onchange="() => HandleSelectChange.InvokeAsync(ContactIndex)" />
         <h5 class="mb-0">@Contact.FullName</h5>
         <small><a href=@($"/contact/update/{Contact.ContactId}")>Update</a></small>
     </div>

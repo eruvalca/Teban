@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Refit;
 using System.Net;
 using System.Text;
+using Teban.Api.Sdk;
 using Teban.Contracts.Responses.V1.Contacts;
 using Teban.UI.Services;
 using Teban.UI.ViewModels;
@@ -26,11 +27,7 @@ public partial class AllContacts
     {
         try
         {
-            Contacts = await ContactsApiService.GetContactsAsync();
-            SelectableContacts = Contacts.Items.Select(x => x.MapToContactCardViewModel())
-                .OrderBy(x => x.LastName).ThenBy(x => x.FirstName)
-                .ToList();
-            SelectedContactsCount = SelectableContacts.Count(x => x.IsSelected);
+            await GetAndSetContacts();
         }
         catch (ApiException exception)
         {
@@ -40,6 +37,15 @@ public partial class AllContacts
                 Navigation.NavigateTo("user/login");
             }
         }
+    }
+
+    private async Task GetAndSetContacts()
+    {
+        Contacts = await ContactsApiService.GetContactsAsync();
+        SelectableContacts = Contacts.Items.Select(x => x.MapToContactCardViewModel())
+            .OrderBy(x => x.LastName).ThenBy(x => x.FirstName)
+            .ToList();
+        SelectedContactsCount = SelectableContacts.Count(x => x.IsSelected);
     }
 
     private void HandleSelectChange(int contactIndex)
@@ -52,5 +58,20 @@ public partial class AllContacts
     {
         SelectableContacts.ForEach(x => x.IsSelected = false);
         SelectedContactsCount = SelectableContacts.Count(x => x.IsSelected);
+    }
+
+    private async Task HandleDeleteSelectedContacts()
+    {
+        var selectedContactIds = SelectableContacts.Where(x => x.IsSelected).Select(x => x.ContactId).ToList();
+
+        try
+        {
+            await ContactsApiService.BulkDeleteContactsAsync(selectedContactIds);
+            await GetAndSetContacts();
+        }
+        catch (Exception exception)
+        {
+            await GetAndSetContacts();
+        }
     }
 }

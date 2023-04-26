@@ -107,4 +107,9 @@ public class ContactsApiService : IContactsApiService
 
         return response;
     }
+
+    public async Task BulkDeleteContactsAsync(IEnumerable<int> ids)
+    {
+        await _contactsApi.BulkDeleteContactsAsync(ids);
+    }
 }

@@ -2,19 +2,34 @@
 
 <div class="row">
     <div class="col-12">
-        <h3>New Contact</h3>
+        <h3>New Contact(s)</h3>
     </div>
 </div>
 
 <div class="row">
-    <div class="col-12">
-        <label>Upload CSV to import multiple contacts: <InputFile OnChange="@HandleFileSelected" /></label>
+    <div class="col-12 col-md-4">
+        <div class="card border-primary">
+            <div class="card-header">
+                Upload CSV (Multiple) <small class="text-muted">Optional</small>
+            </div>
+            <div class="card-body">
+                <InputFile class="form-control" OnChange="@HandleFileSelected" />
+            </div>
+        </div>
     </div>
 </div>
 
 @if (ShowError)
 {
     <ErrorList ErrorMessages="ErrorMessages" />
+}
+else
+{
+    <div class="row mb-3">
+        <div class="col-12 col-md-4 text-center">
+            Or create a single contact below
+        </div>
+    </div>
 }
 
 <div class="row">

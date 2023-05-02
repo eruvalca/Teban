@@ -4,7 +4,8 @@
 {
     <MultipleContactDelete SelectedContactsCount="SelectedContactsCount"
         HandleCancelSelectedContacts="HandleCancelSelectedContacts"
-        HandleDeleteSelectedContacts="HandleDeleteSelectedContacts" />
+        HandleDeleteSelectedContacts="HandleDeleteSelectedContacts"
+        HandleSelectAllContacts="HandleSelectAllContacts" />
 }
 
 <div class="row">
@@ -38,5 +39,9 @@
 }
 else
 {
-    <LoadingSpinner />
+    <div class="row">
+        <div class="col-12 text-center">
+            <LoadingSpinner />
+        </div>
+    </div>
 }

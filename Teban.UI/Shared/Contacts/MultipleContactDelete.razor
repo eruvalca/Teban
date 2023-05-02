@@ -3,13 +3,25 @@
         <div class="card border-primary shadow col-12 multi-card">
             <div class="row">
                 <div class="col-6 text-start">
-                    @SelectedContactsCount selected
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <InputCheckbox class="form-check-input" @bind-Value="IsSelectAll" />
+                            Select All
+                        </label>
+                    </div>
                 </div>
                 <div class="col-6 text-end">
+                    @SelectedContactsCount selected
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 text-start">
                     <button class="btn btn-secondary btn-sm"
                             @onclick="() => HandleCancelSelectedContacts.InvokeAsync()">
                         Cancel
                     </button>
+                </div>
+                <div class="col-6 text-end">
                     <button class="btn btn-danger btn-sm"
                             @onclick="() => HandleDeleteSelectedContacts.InvokeAsync()">
                         Delete

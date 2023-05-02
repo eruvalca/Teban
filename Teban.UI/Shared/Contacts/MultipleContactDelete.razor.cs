@@ -15,4 +15,17 @@ public partial class MultipleContactDelete
     public EventCallback HandleCancelSelectedContacts { get; set; }
     [Parameter]
     public EventCallback HandleDeleteSelectedContacts { get; set; }
+    [Parameter]
+    public EventCallback<bool> HandleSelectAllContacts { get; set; }
+
+    private bool _isSelectAll;
+    private bool IsSelectAll
+    {
+        get { return _isSelectAll; }
+        set
+        {
+            HandleSelectAllContacts.InvokeAsync(value);
+            _isSelectAll = value;
+        }
+    }
 }

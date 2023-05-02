@@ -41,6 +41,8 @@ public partial class AllContacts
 
     private async Task GetAndSetContacts()
     {
+        Contacts = null;
+        StateHasChanged();
         Contacts = await ContactsApiService.GetContactsAsync();
         SelectableContacts = Contacts.Items.Select(x => x.MapToContactCardViewModel())
             .OrderBy(x => x.LastName).ThenBy(x => x.FirstName)
@@ -72,6 +74,20 @@ public partial class AllContacts
         catch (Exception exception)
         {
             await GetAndSetContacts();
+        }
+    }
+
+    private void HandleSelectAllContacts(bool isSelected)
+    {
+        if (isSelected)
+        {
+            SelectableContacts.ForEach(x => x.IsSelected = true);
+            SelectedContactsCount = SelectableContacts.Count;
+        }
+        else
+        {
+            SelectableContacts.ForEach(x => x.IsSelected = false);
+            SelectedContactsCount = 0;
         }
     }
 }

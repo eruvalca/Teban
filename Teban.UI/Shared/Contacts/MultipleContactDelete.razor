@@ -22,10 +22,20 @@
                     </button>
                 </div>
                 <div class="col-6 text-end">
-                    <button class="btn btn-danger btn-sm"
+                    @if (IsDeleteDisabled)
+                    {
+                        <button class="btn btn-danger btn-sm" disabled>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            Deleting...
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-danger btn-sm"
                             @onclick="() => HandleDeleteSelectedContacts.InvokeAsync()">
-                        Delete
-                    </button>
+                            Delete
+                        </button>
+                    }
                 </div>
             </div>
         </div>

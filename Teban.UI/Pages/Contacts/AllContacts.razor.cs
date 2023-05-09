@@ -22,6 +22,7 @@ public partial class AllContacts
     private ContactsResponse? Contacts { get; set; }
     private List<ContactCardViewModel> SelectableContacts { get; set; } = new List<ContactCardViewModel>();
     private int SelectedContactsCount { get; set; }
+    private bool IsDeleteDisabled { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -64,16 +65,20 @@ public partial class AllContacts
 
     private async Task HandleDeleteSelectedContacts()
     {
+        IsDeleteDisabled = true;
+
         var selectedContactIds = SelectableContacts.Where(x => x.IsSelected).Select(x => x.ContactId).ToList();
 
         try
         {
             await ContactsApiService.BulkDeleteContactsAsync(selectedContactIds);
             await GetAndSetContacts();
+            IsDeleteDisabled = false;
         }
         catch (Exception)
         {
             await GetAndSetContacts();
+            IsDeleteDisabled = true;
         }
     }
 

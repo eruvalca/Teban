@@ -12,7 +12,8 @@ public partial class MultipleContactDelete
     public int SelectedContactsCount { get; set; }
     [Parameter]
     public int SelectableContactsCount { get; set; }
-
+    [Parameter]
+    public bool IsDeleteDisabled { get; set; }
     [Parameter]
     public EventCallback HandleCancelSelectedContacts { get; set; }
     [Parameter]

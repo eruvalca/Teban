@@ -14,9 +14,17 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-string tebanApiBaseAddress = builder.HostEnvironment.IsDevelopment()
-    ? "https://localhost:7002"
-    : "https://tebanapi.azurewebsites.net";
+string tebanApiBaseAddress = string.Empty;
+
+if (builder.HostEnvironment.IsDevelopment())
+{
+    tebanApiBaseAddress = "https://localhost:7002";
+}
+else
+{
+    tebanApiBaseAddress = "https://tebanapi.azurewebsites.net";
+    builder.Logging.SetMinimumLevel(LogLevel.Error);
+}
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<ILocalSecureStorage, BrowserLocalSecureStorage>();

@@ -71,7 +71,7 @@ public partial class AllContacts
             await ContactsApiService.BulkDeleteContactsAsync(selectedContactIds);
             await GetAndSetContacts();
         }
-        catch (Exception exception)
+        catch (Exception)
         {
             await GetAndSetContacts();
         }

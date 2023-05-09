@@ -10,6 +10,8 @@ public partial class MultipleContactDelete
 {
     [Parameter]
     public int SelectedContactsCount { get; set; }
+    [Parameter]
+    public int SelectableContactsCount { get; set; }
 
     [Parameter]
     public EventCallback HandleCancelSelectedContacts { get; set; }
@@ -24,8 +26,13 @@ public partial class MultipleContactDelete
         get { return _isSelectAll; }
         set
         {
-            HandleSelectAllContacts.InvokeAsync(value);
-            _isSelectAll = value;
+            _isSelectAll = SelectedContactsCount < SelectableContactsCount;
+            HandleSelectAllContacts.InvokeAsync(_isSelectAll);
         }
+    }
+
+    protected override void OnParametersSet()
+    {
+        _isSelectAll = SelectedContactsCount >= SelectableContactsCount;
     }
 }
